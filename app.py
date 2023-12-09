@@ -16,9 +16,7 @@ import csv
 app = Flask(__name__)
 load_dotenv()
 elevenlabs_service = ElevenLabsService()
-
-openai_api_key = os.getenv('OPENAI_API_KEY')
-client = OpenAI(api_key=openai_api_key)
+openai_service = OpenAIService()
 
 # Configure headers for ElevenLabs API
 #headers_elevenlabs = {
@@ -42,7 +40,6 @@ class LoggingSession(requests.Session):
 def home():
     return render_template('index.html',title='Home')
 
-
 # List all assistants
 @app.route('/get_assistants', methods=['GET'])
 def get_assistants():
@@ -52,22 +49,16 @@ def get_assistants():
         after = request.args.get('after', default=None, type=str)
         before = request.args.get('before', default=None, type=str)
 
-        assistants = client.beta.assistants.list(
-            order=order,
-            limit=limit,
-            after=after,
-            before=before
-        )
+        assistants = openai_service.list_assistants(limit, order, after, before)
         return render_template('assistants.html', assistants=assistants, title='Assistants')
     except Exception as e:
         return render_template('error.html', error_message=str(e))
-
 
 # Retrieve a specific assistant
 @app.route('/assistants/<assistant_id>', methods=['GET'])
 def get_assistant(assistant_id):
     try:
-        assistant = client.beta.assistants.retrieve(assistant_id=assistant_id)
+        assistant = openai_service.get_assistant(assistant_id)
         assistant_dict = {
             'id': assistant.id,
             'object': assistant.object,
@@ -92,14 +83,7 @@ def update_assistant(assistant_id):
     file_ids = request.json.get('file_ids')
 
     try:
-        assistant = client.beta.assistants.update(
-            assistant_id,
-            name=name,
-            model=model,
-            instructions=instructions,
-            tools=tools,
-            file_ids=file_ids
-        )
+        assistant = openai_service.update_assistant(assistant_id, name, model, instructions, tools, file_ids)
         return jsonify(assistant), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -108,12 +92,10 @@ def update_assistant(assistant_id):
 @app.route('/delete_assistant/<assistant_id>', methods=['DELETE'])
 def delete_assistant(assistant_id):
     try:
-        client.beta.assistants.delete(assistant_id)
+        openai_service.delete_assistant(assistant_id)
         return jsonify({'message': 'Assistant deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
 
 @app.route('/threads')
 def get_threads():

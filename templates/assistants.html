@@ -1,20 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Assistants</h2>
+<div class="container mt-5">
+  <h2 class="mb-4">Assistants</h2>
+  <p>Here are the details of our AI assistants.</p>
 
-<!-- List of assistants -->
-<ul class="list-group">
-  {% for assistant in assistants.data %}
-  <li class="list-group-item">
-    <h5>{{ assistant.name or 'Unnamed Assistant' }}</h5>
-    <p><strong>ID:</strong> {{ assistant.id }}</p>
-    <p><strong>Created At:</strong> {{ assistant.created_at }}</p>
-    <p><strong>Model:</strong> {{ assistant.model }}</p>
-    <p><strong>Instructions:</strong> {{ assistant.instructions or 'No instructions provided' }}</p>
-    <a href="{{ url_for('get_assistant', assistant_id=assistant.id) }}" class="btn btn-primary">View Details</a>
-  </li>
-  {% endfor %}
-</ul>
+  <div class="form-card">
+    <!-- List of assistants -->
+    {% for assistant in assistants.data %}
+    <div class="form-row align-items-center mb-3">
+      <div class="col-sm-6">
+        <h3 class="m-0">{{ assistant.name or 'Unnamed Assistant' }}</h3>
+      </div>
+      <div class="col">
+        <p><strong>ID:</strong> {{ assistant.id }}</p>
+        <p><strong>Created At:</strong> {{ assistant.created_at }}</p>
+        <p><strong>Model:</strong> {{ assistant.model }}</p>
+        <p><strong>Instructions:</strong> {{ (assistant.instructions or 'No instructions provided')|truncate(100, True, '...') }}</p>       
+         <a href="{{ url_for('get_assistant', assistant_id=assistant.id) }}" class="btn btn-outline-primary btn-task">View Details</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}
-
-

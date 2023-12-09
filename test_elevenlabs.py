@@ -20,7 +20,7 @@ def test_text_to_speech():
             settings=VoiceSettings(stability=0.2, similarity_boost=0.1, style=0.3, use_speaker_boost=True)
         )
     )
-
+    
     play(audio)
 
 if __name__ == "__main__":
