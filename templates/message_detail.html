@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Message {{ message.id }}</h1>
+<p><strong>Role:</strong> {{ message.role }}</p>
+<p><strong>Content:</strong> {{ message.content[0].text.value }}</p>
+
+<a href="{{ url_for('get_messages', thread_id=message.thread_id) }}">Back to Messages</a>
+
+{% endblock %}

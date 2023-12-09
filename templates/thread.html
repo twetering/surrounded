@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Thread {{ thread_id }}</h1>
+<ul id="message-list">
+    {% for message in messages %}
+        <li>
+            <strong>{{ message.role }}:</strong> {{ message.content[0].text.value }}
+        </li>
+    {% endfor %}
+</ul>
+
+<!-- Add message form -->
+<form id="add-message-form">
+    <label for="message">New Message:</label><br>
+    <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
+    <input type="submit" value="Submit">
+</form>
+
+<a href="{{ url_for('get_threads') }}">Back to Threads</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#add-message-form").submit(function(e){
+        e.preventDefault();
+        var message = $("#message").val();
+        $.ajax({
+            url: "{{ url_for('add_message', thread_id=thread_id) }}",
+            method: "POST",
+            data: JSON.stringify({message: message}),
+            contentType: "application/json",
+            success: function(response){
+                // Add the new message to the list
+                $("#message-list").append('<li><strong>' + response.role + ':</strong> ' + response.content + '</li>');
+                // Clear the textarea
+                $("#message").val('');
+            },
+            error: function(response){
+                alert('Error: ' + response.responseJSON.error);
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

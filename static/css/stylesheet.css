@@ -1,0 +1,422 @@
+/* General reset for consistent styling across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto', sans-serif; /* Roboto is commonly used for clean, professional interfaces */
+    background-color: #f4f5f7; /* Similar background color as Elevenlabs */
+    color: #4a4a4a; /* Similar text color as Elevenlabs */
+}
+
+/* Header styling to match the Elevenlabs look */
+header {
+    background-color: #f8f9fa; /* A light gray background for the header */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* A subtle shadow for depth */
+    padding: 10px 0; /* Some padding on the top and bottom */
+}
+
+/* Header logo and navigation styling */
+.navbar-brand {
+    font-weight: 700; /* Make the brand logo bold */
+    color: #333; /* Darker color for contrast */
+}
+
+.navbar {
+    background: transparent; /* No background color for a clean, modern look */
+    border-bottom: 1px solid #eaeaea; /* A subtle border to delineate the header */
+}
+
+/* Styling for navigation links */
+.nav-link {
+    color: #4a4a4a; /* Set the link color */
+    font-size: 1rem; /* Match the font size from the example */
+}
+
+/* Hover effect for navigation links */
+.nav-link:hover {
+    color: #007bff; /* Highlight color for hover state */
+}
+
+/* Main content typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif; /* Keep the font family consistent */
+    color: #333; /* Dark gray color for headers to match Elevenlabs */
+    margin-bottom: 15px; /* Add some space below headers */
+}
+
+/* Specific header styles */
+h1 {
+    font-size: 2.5rem; /* Large font size for main headers */
+    font-weight: 700; /* Bold font weight for h1 */
+}
+
+h2 {
+    font-size: 2rem; /* Slightly smaller font size for h2 */
+    font-weight: 600; /* Semi-bold weight for sub-headers */
+}
+
+.navbar {
+    margin: 0 20px; /* Geef wat ruimte aan de zijkanten */
+}
+
+.navbar-brand {
+    font-weight: 700; /* Maak het merk/logo vetgedrukt */
+}
+
+.navbar-nav .nav-link {
+    color: #333; /* Donkergrijze tekst voor navigatielinks */
+    margin-left: 20px; /* Ruimte tussen de links */
+    transition: color 0.3s ease; /* Overgangseffect voor hover */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007BFF; /* Kleurverandering bij hover */
+}
+
+/* Footer stijling */
+footer {
+    background-color: #f8f9fa; /* Dezelfde achtergrondkleur als de header voor consistentie */
+    padding: 10px 20px; /* Padding aan de zijkanten */
+}
+
+footer div {
+    color: #6c757d; /* Een donkerdere grijstint voor de tekst */
+}
+
+.container {
+    max-width: 1200px; /* Maximale breedte van de container */
+    margin: 0 auto; /* Centreer de container */
+    padding: 20px;
+    background-color: #ffffff; /* Witte achtergrond voor containers */
+    border-radius: 10px; /* Afgeronde hoeken */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05); /* Subtiele schaduw */
+    margin-top: 40px; /* Ruimte aan de bovenkant */
+}
+
+/* Formulier en invoervelden stijlen 
+.container {
+    max-width: 900px; 
+    margin: auto; 
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+*/
+
+.form-card {
+    background-color: #f8f9fa; /* Achtergrondkleur voor de kaart-achtige lay-out */
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.form-card h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    margin-right: 15px; /* Voeg ruimte toe aan de rechterkant van de titel */
+}
+
+/* Zorg ervoor dat de titels verticaal uitgelijnd zijn met de invoervelden */
+.form-row.align-items-center {
+    align-items: center;
+}
+
+.form-card p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 1rem; /* Voeg wat ruimte toe na elke form control */
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+/* Style for the Task buttons */
+.btn-outline-primary {
+    border: 1px solid #007bff;
+    color: #007bff;
+    background-color: transparent;
+}
+
+.btn-outline-primary:hover, 
+.btn-outline-primary:focus, 
+.btn-outline-primary:active {
+    color: white;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+
+/* Styles of the settings slider */ 
+.voice-settings-panel {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.voice-settings-panel h3 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+
+/* Pseudo-element for displaying the tooltip */
+.slider-container input[type="range"]::after {
+    content: attr(data-title); /* Display the data-title attribute content */
+    position: absolute;
+    left: 50%; /* Center the tooltip */
+    transform: translateX(-50%); /* Ensure it is centered */
+    bottom: 25px; /* Position it below the slider */
+    background-color: #007bff; /* Background color for the tooltip */
+    color: white; /* Text color for the tooltip */
+    padding: 2px 8px; /* Some padding around the text */
+    font-size: 0.75rem; /* Smaller font size for the tooltip */
+    border-radius: 4px; /* Rounded corners for the tooltip */
+    white-space: nowrap; /* Prevent wrapping of text */
+    opacity: 0; /* Hide the tooltip by default */
+    transition: opacity 0.3s; /* Transition for the tooltip appearance */
+    pointer-events: none; /* Prevents the tooltip from being clickable */
+}
+
+/* Show the tooltip when hovering over the slider */
+.slider-container input[type="range"]:hover::after {
+    opacity: 1; /* Make the tooltip visible on hover */
+}
+
+/* Adjustments for when the slider thumb is at the extremes */
+.slider-container input[type="range"]:hover::after {
+    left: calc(var(--thumb-position) * 1%); /* Use a CSS variable for dynamic positioning */
+}
+
+/* Styling the sliders within the voice settings */
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider-container label {
+    flex-grow: 1;
+    margin-right: 1rem; /* Space between label and slider */
+}
+
+.slider-container input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px; /* Thinner track */
+    border-radius: 5px;
+    background: #007bff; /* Use primary color for slider track */
+    position: relative; /* Position relative for the pseudo-elements */
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer; /* Cursor changes to pointer when hovering over the thumb */
+    border: 3px solid #007bff; /* Border color same as track */
+}
+
+/* Dark grey button color */
+button {
+    background-color: #1d1e20; /* Bootstrap primaire kleur */
+    border: none;
+    border-radius: 5px; /* Licht afgeronde hoeken */
+    padding: 10px 20px;
+    margin: 0 10px; /* Ruimte rondom knoppen */
+    transition: background-color 0.3s ease;
+}
+
+/* Donkerdere primaire kleur bij hover */
+button:hover {
+    background-color: #5a5f65; 
+}
+
+/* Tabelstijlen */
+table {
+    width: 100%; /* Volle breedte */
+    border-collapse: collapse; /* Geen dubbele randen */
+    margin-top: 30px; /* Ruimte boven de tabel */
+}
+
+table th, table td {
+    padding: 12px 15px; /* Comfortabele padding in cellen */
+    text-align: left; /* Links uitlijnen van tekst */
+    border-bottom: 1px solid #ddd; /* Lichte ondergrens voor rijen */
+}
+
+/* Audioresultaat en geschiedenis stijlen */
+.audio-result, .history-list {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* Stijlen voor de spinner */
+#loading-spinner .spinner-border {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 5px;
+}
+
+.voice-settings {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Voice settings panel styles */
+.voice-settings h3 {
+    font-size: 1rem; /* Smaller font size for the header */
+    cursor: pointer; /* Indicates the header is clickable */
+    user-select: none; /* Prevent text selection on click */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between title and arrow */
+}
+
+/* Arrow icon next to Voice Settings */
+.voice-settings h3:after {
+    content: '\25BC'; /* Downward arrow */
+    font-size: 0.8rem; /* Smaller arrow size */
+    transition: transform 0.3s ease-in-out; /* Smooth transform on toggle */
+}
+
+/* Rotate arrow when settings panel is open */
+.voice-settings h3.active:after {
+    transform: rotateX(180deg);
+}
+
+.setting {
+    margin-bottom: 15px;
+}
+
+.setting label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type=range] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+input[type=checkbox] {
+    margin-right: 10px;
+}
+
+#default {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#default:hover {
+    background-color: #0056b3;
+}
+
+.toggle-settings {
+    cursor: pointer;
+    font-size: 1.25rem; /* Adjust size as needed to match the example */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none; /* Prevent text selection on click */
+}
+
+.toggle-settings .arrow {
+    transition: transform 0.3s ease;
+}
+
+.settings-panel {
+    display: none; /* Initially hidden */
+    padding: 1rem;
+    border-top: 1px solid #ddd; /* Light border at the top */
+}
+
+/* When the panel is open, rotate the arrow */
+.toggle-settings.active .arrow {
+    transform: rotate(180deg);
+}
+
+/* Checkbox customization */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Button to reset to default */
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+/* Text input and Generate button */
+#text-input {
+    margin-bottom: 1rem;
+}
+
+/* Apply the CSS for the button when it's active */
+.btn-outline-primary.active,
+.btn-outline-primary:active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

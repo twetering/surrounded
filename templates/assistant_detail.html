@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container">
+    <h1>Assistant Details</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ assistant.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ assistant.model }}</h6>
+            <p class="card-text">{{ assistant.instructions }}</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>ID:</strong> {{ assistant.id }}</li>
+                <li class="list-group-item"><strong>Created At:</strong> {{ assistant.created_at }}</li>
+                <li class="list-group-item"><strong>File IDs:</strong> {{ assistant.file_ids }}</li>
+                <li class="list-group-item"><strong>Metadata:</strong> {{ assistant.metadata }}</li>
+            </ul>
+        </div>
+    </div>
+    <a href="{{ url_for('get_assistants') }}" class="btn btn-primary mt-3">Back to Assistants</a>
+</div>
+
+{% endblock %}

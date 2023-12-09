@@ -1,0 +1,24 @@
+
+
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Voices</h1>
+
+<!-- Add a button for creating a new thread -->
+<!-- <button onclick="createThread()">Voivces</button> -->
+
+<!-- List the threads -->
+<ul id="thread-list">
+    {% for voice in voices %}
+        <li>
+            <a href="{{ url_for('get_messages', thread_id=thread.id) }}">
+                {{ voice.id }} - {{ voice.created_at }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+
+
+    {% endblock %}

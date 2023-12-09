@@ -1,0 +1,47 @@
+
+
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Threads</h1>
+
+<!-- Add a button for creating a new thread -->
+<button onclick="createThread()">Create new thread</button>
+
+<!-- List the threads -->
+<ul id="thread-list">
+    {% for thread in threads %}
+        <li>
+            <a href="{{ url_for('get_messages', thread_id=thread.id) }}">
+                {{ thread.id }} - {{ thread.created_at }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+    // Function for creating a new thread
+    function createThread() {
+        fetch('/create_thread', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Add the new thread to the list
+            const ul = document.querySelector('#thread-list');
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `/threads/${data.id}`;
+            a.textContent = `${data.id} - ${data.created_at}`;
+            li.appendChild(a);
+            ul.appendChild(li);
+        })
+        .catch(error => console.error(error));
+    }
+</script>
+
+
+    {% endblock %}

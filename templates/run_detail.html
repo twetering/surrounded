@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Run {{ run.id }}</h1>
+<p><strong>Model:</strong> {{ run.model }}</p>
+<p><strong>Status:</strong> {{ run.status }}</p>
+
+<a href="{{ url_for('get_runs') }}">Back to Runs</a>
+
+{% endblock %}

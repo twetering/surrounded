@@ -1,0 +1,343 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Speech Synthesis</h2>
+    <p>Unleash the power of our cutting-edge technology to generate realistic, captivating speech in a wide range of languages.</p>
+
+    <div class="form-card">
+        <!-- Task Section -->
+         <div class="form-row align-items-center mb-3">
+            <div class="col-auto">
+                <h3 class="m-0">Task</h3>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-outline-primary btn-task mr-2">Text to Speech</button>
+                <button type="button" class="btn btn-outline-primary btn-task">Speech to Speech</button>
+            </div>
+        </div>
+
+       <!-- Settings Section -->
+       <div class="form-row align-items-center mb-3">
+        <div class="col-auto">
+            <h3 class="m-0">Settings</h3>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <!-- label for="voice-select">Voice</label -->
+                <select id="voice-select" class="form-control">
+                    <!-- Options are dynamically loaded via back-end -->
+                </select>
+            </div>
+
+            <!-- Voice settings panel -->
+            <div class="voice-settings">
+                <h3 class="toggle-settings">Voice Settings</h3>
+                <div class="settings-panel">
+                    <div class="setting">
+                        <label for="stability">Stability</label>
+                        <input type="range" id="stability" name="stability" min="0" max="1" step="0.01" data-title="0.71">
+                    </div>
+                    <div class="setting">
+                        <label for="clarity">Clarity + Similarity Enhancement</label>
+                        <input type="range" id="clarity" name="clarity" min="0" max="1" step="0.01" data-title="0.5">
+                    </div>
+                    <div class="setting">
+                        <label for="style">Style Exaggeration</label>
+                        <input type="range" id="style" name="style" min="0" max="1" step="0.01" data-title="0.0">
+                    </div>
+                    <div class="setting">
+                        <label for="speaker-boost">Speaker Boost</label>
+                        <input type="checkbox" id="speaker-boost" name="speaker-boost" checked>
+                    </div>
+                    <button type="button" id="default">To Default</button>
+                </div>
+            </div>
+            
+            
+             <!-- Model settings panel -->
+            <div class="form-group">
+                <!-- label for="model-select">Model</label -->
+                <select id="model-select" class="form-control">
+                    <option>Eleven Multilingual v2</option>
+                    <!-- Other model options -->
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">   <!-- Text Section -->
+        <div class="form-row align-items-center mb-3">
+            <div class="col-auto">
+                <h3 class="m-0">Text</h3>
+            </div>
+            <div class="col">
+                <textarea id="text-input" class="form-control" rows="4"></textarea>
+            </div>
+        </div>
+    </div>
+        <button id="generate-speech" class="btn btn-primary" onclick="generateSpeech()">Genereer Spraak</button>
+    </div>
+    <div class="col-md-6">
+        <!-- Resultaat Sectie -->
+        <div id="audio-result" class="mt-4">
+            <!-- Hier komt de gegenereerde spraak te staan -->
+            <!-- Laad Spinner (verborgen totdat actief) -->
+            <div id="loading-spinner" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Laden...</span>
+                </div>
+            </div>
+        </div>        
+    </div>      
+</div>
+
+
+
+
+
+
+<div class="container mt-4">
+        <div class="col-md-6">
+            <!-- History List -->
+        <div id="history-list" class="row mt-4">
+            <div class="col-md-12">
+            <h2 class="mb-4">Speech History</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Datum</th>
+                        <th>Status</th>
+                        <th>Tekst</th>
+                        <th>Acties</th>
+                    </tr>
+                </thead>
+                <tbody id="history-items">
+                    <!-- Geschiedenisitems worden hier dynamisch ingeladen -->
+                </tbody>
+            </table>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+
+function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+    }
+    return text;
+}
+
+// Event listener voor het laden van de pagina
+document.addEventListener('DOMContentLoaded', function() {
+    
+// Set default values for the voice settings
+const defaultSettings = {
+    stability: 0.71,
+    clarity: 0.5,
+    style: 0.0,
+    speakerBoost: true
+};
+
+// Function to set sliders to default values
+function setDefaultValues() {
+    document.getElementById('stability').value = defaultSettings.stability;
+    document.getElementById('clarity').value = defaultSettings.clarity;
+    document.getElementById('style').value = defaultSettings.style;
+    document.getElementById('speaker-boost').checked = defaultSettings.speakerBoost;
+}
+
+// Set the sliders to default values on page load
+setDefaultValues();
+
+// Function to update the tooltip on hover
+function updateSliderTooltip(slider) {
+        slider.setAttribute('data-title', slider.value);
+        slider.addEventListener('input', function() {
+            // Update the value of the CSS variable based on the slider value
+            let value = (this.value - this.min) / (this.max - this.min) * 100;
+            this.style.setProperty('--thumb-position', value);
+            // Update the data-title attribute to the value of the slider
+            this.setAttribute('data-title', this.value);
+        });
+    }
+
+// Initialize tooltips for each slider
+updateSliderTooltip(document.getElementById('stability'));
+updateSliderTooltip(document.getElementById('clarity'));
+updateSliderTooltip(document.getElementById('style'));
+
+// Reset to default button click event
+document.getElementById('default').addEventListener('click', setDefaultValues);
+
+// Add event listeners for sliders to update the settings in real-time
+document.querySelectorAll('input[type=range]').forEach(slider => {
+        slider.addEventListener('input', function() {
+            // Update the voice settings based on the slider values
+            console.log(this.id + ' is now: ' + this.value);
+        });
+    });
+    // Load voices and history
+    loadVoices();
+    loadHistory();
+});
+
+function loadVoices() {
+    fetch('/get_voices')
+        .then(response => {
+            console.log("Response received:", response); // Log de response
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data parsed:", data); // Log de verwerkte data
+            const select = document.getElementById('voice-select');
+            select.innerHTML = ''; // Leegmaken voor het geval dat er al opties zijn
+            data.forEach(voice => {
+                let option = document.createElement('option');
+                option.value = voice.voice_id;
+                option.textContent = voice.name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading voices:', error); // Log eventuele fouten
+        });
+}
+
+function generateSpeech() {
+    const text = document.getElementById('text-input').value;
+    const voiceId = document.getElementById('voice-select').value;
+
+    // Get current voice settings values
+    const stabilityValue = document.getElementById('stability').value;
+    const clarityValue = document.getElementById('clarity').value;
+    const styleValue = document.getElementById('style').value;
+    const speakerBoostValue = document.getElementById('speaker-boost').checked;
+
+    const voiceSettings = {
+        stability: parseFloat(stabilityValue),
+        clarity: parseFloat(clarityValue),
+        style: parseFloat(styleValue),
+        speakerBoost: speakerBoostValue
+    };
+
+    // Log for debugging
+    console.log("Generating speech for:", text, "with voice ID:", voiceId, "and voice settings:", voiceSettings);
+
+    // Show loading spinner
+    document.getElementById('loading-spinner').style.display = 'block';
+
+    // Make the POST request to the Flask backend
+    fetch('/generate_speech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: text,
+            voice_id: voiceId,
+            settings: voiceSettings
+        })
+    })
+    .then(response => {
+        console.log("Response received:", response);
+        return response.json();
+    })
+    //.then(response => response.json())
+    .then(data => {
+        console.log("Data parsed:", data); // Log de verwerkte data
+        document.getElementById('loading-spinner').style.display = 'none';
+        const audioResult = document.getElementById('audio-result');
+        if(data.audio) {
+            const audio = new Audio('data:audio/wav;base64,' + data.audio);
+            audio.controls = true;
+            audioResult.innerHTML = '';
+            audioResult.appendChild(audio);
+            loadHistory(); // Update de geschiedenislijst
+        } else {
+            console.error("No audio data received");
+            audioResult.innerHTML = '<p>Geen audio gegenereerd. Controleer de console voor fouten.</p>';
+        }
+    })
+    .catch(error => {
+        console.error('Error generating speech:', error); // Log eventuele fouten
+        document.getElementById('loading-spinner').style.display = 'none';
+    });
+}
+
+
+
+function loadHistory() {
+    fetch('/get_history')
+        .then(response => response.json())
+        .then(data => {
+            const historyList = document.getElementById('history-items');
+            historyList.innerHTML = '';
+            data.forEach(item => {
+                let row = document.createElement('tr');
+                let truncatedText = truncateText(item.text, 20); // Tekst inkorten na 20 karakters
+                row.innerHTML = `
+                    <td>${item.voice_name}</td>
+                    <td>${new Date(item.date).toLocaleString()}</td>
+                    <td>created</td>
+                    <td>${truncatedText}</td>
+                `;
+
+                // Voeg een cel toe voor het audio-element
+                let audioCell = document.createElement('td');
+                let audio = new Audio(`/get_audio/${item.history_item_id}`);
+                audio.controls = true;
+                audioCell.appendChild(audio);
+                row.appendChild(audioCell);
+
+                historyList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error loading history:', error));
+}
+
+
+// Functie om audio direct na generatie af te spelen
+function playGeneratedAudio(base64Audio) {
+    const audio = new Audio('data:audio/wav;base64,' + base64Audio);
+    audio.play();
+}
+
+// Functie om audio uit de geschiedenis af te spelen
+function playHistoryAudio(historyItemId) {
+    const audioUrl = `/get_audio/${historyItemId}`;
+    const audio = new Audio(audioUrl);
+    audio.play();
+}
+
+// Reset to default button click event
+document.getElementById('default').addEventListener('click', function() {
+    setDefaultValues();
+});
+
+// Add event listeners for sliders to update the settings in real-time
+document.querySelectorAll('input[type=range]').forEach(slider => {
+    slider.addEventListener('input', function() {
+        // Update the voice settings based on the slider values
+        console.log(this.id + ' is now: ' + this.value);
+    });
+});
+
+// JavaScript for toggling the voice settings panel
+document.querySelector('.toggle-settings').addEventListener('click', function() {
+    this.classList.toggle('active');
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+        panel.style.display = "none";
+    } else {
+        panel.style.display = "block";
+    }
+});
+
+</script>
+
+{% endblock %}
