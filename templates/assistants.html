@@ -4,19 +4,21 @@
   <h2 class="mb-4">Assistants</h2>
   <p>Here are the details of our AI assistants.</p>
 
-  <div class="form-card">
+  <div class="row">
     <!-- List of assistants -->
     {% for assistant in assistants.data %}
-    <div class="form-row align-items-center mb-3">
-      <div class="col-sm-6">
-        <h3 class="m-0">{{ assistant.name or 'Unnamed Assistant' }}</h3>
-      </div>
-      <div class="col">
-        <p><strong>ID:</strong> {{ assistant.id }}</p>
-        <p><strong>Created At:</strong> {{ assistant.created_at }}</p>
-        <p><strong>Model:</strong> {{ assistant.model }}</p>
-        <p><strong>Instructions:</strong> {{ (assistant.instructions or 'No instructions provided')|truncate(100, True, '...') }}</p>       
-         <a href="{{ url_for('get_assistant', assistant_id=assistant.id) }}" class="btn btn-outline-primary btn-task">View Details</a>
+    <div class="col-sm-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ assistant.name or 'Unnamed Assistant' }}</h5>
+          <p class="card-text">
+            <strong>ID:</strong> {{ assistant.id }}<br>
+            <strong>Created At:</strong> {{ assistant.created_at }}<br>
+            <strong>Model:</strong> {{ assistant.model }}<br>
+            <strong>Instructions:</strong> {{ (assistant.instructions or 'No instructions provided')|truncate(300, True, '...') }}
+          </p>
+          <a href="{{ url_for('get_assistant', assistant_id=assistant.id) }}" class="btn btn-primary">View Details</a>
+        </div>
       </div>
     </div>
     {% endfor %}

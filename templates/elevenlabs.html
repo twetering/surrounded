@@ -2,124 +2,126 @@
 {% block content %}
 
 <div class="container mt-5">
-    <h2 class="mb-4">Speech Synthesis</h2>
-    <p>Unleash the power of our cutting-edge technology to generate realistic, captivating speech in a wide range of languages.</p>
+    <div class="row">
+        <!-- Speech Synthesis Card -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="mb-4">Speech Synthesis</h2>
+                    <p>Unleash the power of our cutting-edge technology to generate realistic, captivating speech in a wide range of languages.</p>
 
-    <div class="form-card">
-        <!-- Task Section -->
-         <div class="form-row align-items-center mb-3">
-            <div class="col-auto">
-                <h3 class="m-0">Task</h3>
-            </div>
-            <div class="col">
-                <button type="button" class="btn btn-outline-primary btn-task mr-2">Text to Speech</button>
-                <button type="button" class="btn btn-outline-primary btn-task">Speech to Speech</button>
-            </div>
-        </div>
+                    <div class="form-card">
+                        <!-- Task Section -->
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <h3 class="m-0">Task</h3>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-outline-primary btn-task mr-2">Text to Speech</button>
+                                <button type="button" class="btn btn-outline-primary btn-task">Speech to Speech</button>
+                            </div>
+                        </div>
 
-       <!-- Settings Section -->
-       <div class="form-row align-items-center mb-3">
-        <div class="col-auto">
-            <h3 class="m-0">Settings</h3>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <!-- label for="voice-select">Voice</label -->
-                <select id="voice-select" class="form-control">
-                    <!-- Options are dynamically loaded via back-end -->
-                </select>
-            </div>
+                        <!-- Settings Section -->
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <h3 class="m-0">Settings</h3>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <!-- label for="voice-select">Voice</label -->
+                                    <select id="voice-select" class="form-control">
+                                        <!-- Options are dynamically loaded via back-end -->
+                                    </select>
+                                </div>
 
-            <!-- Voice settings panel -->
-            <div class="voice-settings">
-                <h3 class="toggle-settings">Voice Settings</h3>
-                <div class="settings-panel">
-                    <div class="setting">
-                        <label for="stability">Stability</label>
-                        <input type="range" id="stability" name="stability" min="0" max="1" step="0.01" data-title="0.71">
+                        <!-- Voice settings panel -->
+                        <div class="voice-settings">
+                            <h3 class="toggle-settings">Voice Settings</h3>
+                            <div class="settings-panel">
+                                <div class="setting">
+                                    <label for="stability">Stability: <span id="stability-value">0.71</span></label>
+                                    <input type="range" id="stability" name="stability" min="0" max="1" step="0.01" value="0.71">
+                                </div>
+                                <div class="setting">
+                                    <label for="clarity">Clarity + Similarity Enhancement: <span id="clarity-value">0.5</span></label>
+                                    <input type="range" id="clarity" name="clarity" min="0" max="1" step="0.01" value="0.5">
+                                </div>
+                                <div class="setting">
+                                    <label for="style">Style Exaggeration: <span id="style-value">0.0</span></label>
+                                    <input type="range" id="style" name="style" min="0" max="1" step="0.01" value="0.0">
+                                </div>
+                                <div class="setting">
+                                    <label for="speaker-boost">Speaker Boost</label>
+                                    <input type="checkbox" id="speaker-boost" name="speaker-boost" checked>
+                                </div>
+                                <button type="button" id="default">To Default</button>
+                            </div>
+                        </div>
+                        <!-- Model settings panel -->
+                        <div class="form-group">
+                            <!-- label for="model-select">Model</label -->
+                            <select id="model-select" class="form-control">
+                                <option>Eleven Multilingual v2</option>
+                                <!-- Other model options -->
+                            </select>
+                        </div>
                     </div>
-                    <div class="setting">
-                        <label for="clarity">Clarity + Similarity Enhancement</label>
-                        <input type="range" id="clarity" name="clarity" min="0" max="1" step="0.01" data-title="0.5">
-                    </div>
-                    <div class="setting">
-                        <label for="style">Style Exaggeration</label>
-                        <input type="range" id="style" name="style" min="0" max="1" step="0.01" data-title="0.0">
-                    </div>
-                    <div class="setting">
-                        <label for="speaker-boost">Speaker Boost</label>
-                        <input type="checkbox" id="speaker-boost" name="speaker-boost" checked>
-                    </div>
-                    <button type="button" id="default">To Default</button>
                 </div>
-            </div>
-            
-            
-             <!-- Model settings panel -->
-            <div class="form-group">
-                <!-- label for="model-select">Model</label -->
-                <select id="model-select" class="form-control">
-                    <option>Eleven Multilingual v2</option>
-                    <!-- Other model options -->
-                </select>
-            </div>
-        </div>
-    </div>
 
-    <div class="form-group">   <!-- Text Section -->
-        <div class="form-row align-items-center mb-3">
-            <div class="col-auto">
-                <h3 class="m-0">Text</h3>
+                <div class="form-group">   <!-- Text Section -->
+                    <div class="form-row align-items-center mb-3">
+                        <div class="col-auto">
+                            <h3 class="m-0">Text</h3>
+                        </div>
+                        <div class="col">
+                            <textarea id="text-input" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button id="generate-speech" class="btn btn-primary" onclick="generateSpeech()">Genereer Spraak</button>
             </div>
-            <div class="col">
-                <textarea id="text-input" class="form-control" rows="4"></textarea>
-            </div>
+
+            <div class="col-md-12">
+                <!-- Resultaat Sectie -->
+                <div id="audio-result" class="mt-4">
+                    <!-- Hier komt de gegenereerde spraak te staan -->
+                    <!-- Laad Spinner (verborgen totdat actief) -->
+                    <div id="loading-spinner" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Laden...</span>
+                        </div>
+                    </div>
+                </div>        
+            </div>      
         </div>
     </div>
-        <button id="generate-speech" class="btn btn-primary" onclick="generateSpeech()">Genereer Spraak</button>
-    </div>
-    <div class="col-md-6">
-        <!-- Resultaat Sectie -->
-        <div id="audio-result" class="mt-4">
-            <!-- Hier komt de gegenereerde spraak te staan -->
-            <!-- Laad Spinner (verborgen totdat actief) -->
-            <div id="loading-spinner" class="text-center" style="display: none;">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Laden...</span>
-                </div>
-            </div>
-        </div>        
-    </div>      
 </div>
 
-
-
-
-
-
-<div class="container mt-4">
-        <div class="col-md-6">
-            <!-- History List -->
-        <div id="history-list" class="row mt-4">
-            <div class="col-md-12">
-            <h2 class="mb-4">Speech History</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Naam</th>
-                        <th>Datum</th>
-                        <th>Status</th>
-                        <th>Tekst</th>
-                        <th>Acties</th>
-                    </tr>
-                </thead>
-                <tbody id="history-items">
-                    <!-- Geschiedenisitems worden hier dynamisch ingeladen -->
-                </tbody>
-            </table>
-            </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">    <!-- History List -->
+                    <h2 class="mb-4">Speech History</h2>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Tekst</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-items">
+                        <!-- History items are loaded here dynamically -->
+                    </tbody>
+                </table>
+                </div>
+            </div>  
         </div>
-        
+    </div>
     </div>
 </div>
 
@@ -143,33 +145,30 @@ const defaultSettings = {
     speakerBoost: true
 };
 
-// Function to set sliders to default values
 function setDefaultValues() {
-    document.getElementById('stability').value = defaultSettings.stability;
-    document.getElementById('clarity').value = defaultSettings.clarity;
-    document.getElementById('style').value = defaultSettings.style;
+    document.getElementById('stability').value = '0.71';
+    document.getElementById('clarity').value = '0.5';
+    document.getElementById('style').value = '0.0';
     document.getElementById('speaker-boost').checked = defaultSettings.speakerBoost;
+    document.getElementById('stability-value').textContent = '0.71';
+    document.getElementById('clarity-value').textContent = '0.5';
+    document.getElementById('style-value').textContent = '0.0';
 }
 
 // Set the sliders to default values on page load
 setDefaultValues();
 
-// Function to update the tooltip on hover
-function updateSliderTooltip(slider) {
-        slider.setAttribute('data-title', slider.value);
-        slider.addEventListener('input', function() {
-            // Update the value of the CSS variable based on the slider value
-            let value = (this.value - this.min) / (this.max - this.min) * 100;
-            this.style.setProperty('--thumb-position', value);
-            // Update the data-title attribute to the value of the slider
-            this.setAttribute('data-title', this.value);
-        });
-    }
-
-// Initialize tooltips for each slider
-updateSliderTooltip(document.getElementById('stability'));
-updateSliderTooltip(document.getElementById('clarity'));
-updateSliderTooltip(document.getElementById('style'));
+window.onload = function() {
+    document.getElementById('stability').addEventListener('input', function() {
+        document.getElementById('stability-value').textContent = this.value;
+    });
+    document.getElementById('clarity').addEventListener('input', function() {
+        document.getElementById('clarity-value').textContent = this.value;
+    });
+    document.getElementById('style').addEventListener('input', function() {
+        document.getElementById('style-value').textContent = this.value;
+    });
+}
 
 // Reset to default button click event
 document.getElementById('default').addEventListener('click', setDefaultValues);
@@ -279,7 +278,7 @@ function loadHistory() {
             historyList.innerHTML = '';
             data.forEach(item => {
                 let row = document.createElement('tr');
-                let truncatedText = truncateText(item.text, 20); // Tekst inkorten na 20 karakters
+                let truncatedText = truncateText(item.text, 100); // Tekst inkorten na 20 karakters
                 row.innerHTML = `
                     <td>${item.voice_name}</td>
                     <td>${new Date(item.date).toLocaleString()}</td>
