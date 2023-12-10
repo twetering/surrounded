@@ -1,41 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.0/lame.min.js"></script>
-<h1>Chat with Assistant</h1>
-<div id="chat-box">
-    <!-- The chat messages will be added here -->
-</div>
 
-<button id="play-button" style="display: none;">Play</button> <button id="download-button" style="display: none;">Download</button>
-<div id="spinner" style="display: none;">
-    <img src="{{ url_for('static', filename='spinner.gif') }}" alt="Loading...">
-</div>
-<form id="chat-form">
-    <input type="text" id="user-input" placeholder="Type your message here...">
-    <button type="submit">Send</button>
-</form>
 
-<h1>Elevenlabs</h1>
-<div>
-<form action="/text-to-speech" method="post">
-    <form action="/text-to-speech" method="post">
-        <label for="model">Model:</label>
-        <select id="model" name="model">
-            <option value="eleven_multilingual_v2">eleven_multilingual_v2</option>
-        </select>
+<div class="container">
+    <h1 class="my-4">Chat with Assistant</h1>
 
-    <label for="voice">Voice:</label>
-    <select id="voice" name="voice">
-        {% for voice in voices %}
-        <option value="{{ voice.id }}">{{ voice.name }}</option>
-        {% endfor %}
-    </select>
+   
+    <div id="chat-box" class="mb-4">
+        <!-- Placeholder for chat messages -->
+        <div id="placeholder" class="card mb-3">
+            <div class="card-body text-muted">
+                Chat messages will be added here...
+            </div>
+        </div>
+    </div>
 
-    <label for="text">Text:</label>
-    <textarea id="text" name="text"></textarea>
+    <!-- Spinner for indicating loading state -->
+    <div id="spinner" style="display: none;" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
 
-    <input type="submit" value="Submit">
-</form>
+    <!-- Chat input form -->
+    <form id="chat-form" class="mb-4">
+        <div class="form-group">
+            <textarea class="form-control" id="user-input" rows="3" placeholder="Type your message here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
 </div>
 
 <script>
@@ -46,7 +39,7 @@
             var userInput = $('#user-input').val();
             var messages = [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": userInput}];
 
-            // Toon de spinner
+            // Show the spinner
             $('#spinner').show();
 
             $.ajax({
@@ -55,137 +48,26 @@
                 contentType: 'application/json',
                 data: JSON.stringify({messages: messages}),
                 success: function(data) {
-                    // Verberg de spinner
+                    // Hide the spinner
                     $('#spinner').hide();
 
-                    $('#chat-box').append('<p>User: ' + userInput + '</p>');
-                    $('#chat-box').append('<p>Assistant: ' + data.message + '</p>');
-                    $('#user-input').val('');
+                    // Remove placeholder
+                    $('#placeholder').remove();
 
-                    // Show the 'Play' button
-                    $('#play-button').show().data('message', data.message);
+                    // Add user message
+                    $('#chat-box').append('<div class="card bg-light mb-3"><div class="card-body"><p><strong>User:</strong> ' + userInput + '</p></div></div>');
+                    // Add assistant message
+                    $('#chat-box').append('<div class="card mb-3"><div class="card-body"><p><strong>Assistant:</strong> ' + data.assistant_message + '</p></div></div>');
+                    $('#user-input').val('');
                 },
                 error: function(error) {
-                    // Verberg de spinner
+                    // Hide the spinner
                     $('#spinner').hide();
-
                     console.error(error);
                 }
             });
         });
-
-        function encodeAudioData(audioData) {
-            // Convert the ArrayBuffer to a Float32Array
-            var float32Array = new Float32Array(audioData);
-
-            // Convert the Float32Array to a Int16Array
-            var int16Array = float32ArrayToInt16Array(float32Array);
-
-            // Create a new LAME encoder
-            var mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128); // 1 for mono, 44100 is the sample rate, 128 is the bit rate
-
-            // Encode the audio data
-            var mp3Data = [];
-            var mp3buf = mp3encoder.encodeBuffer(int16Array);
-            if (mp3buf.length > 0) {
-                mp3Data.push(mp3buf);
-            }
-
-            // Flush the encoder
-            var mp3buf = mp3encoder.flush();
-            if (mp3buf.length > 0) {
-                mp3Data.push(mp3buf);
-            }
-
-            // Return the encoded MP3 data
-            return new Blob(mp3Data, {type: 'audio/mpeg'});
-        }
-
-        function float32ArrayToInt16Array(float32Array) {
-            var int16Array = new Int16Array(float32Array.length);
-            for (var i = 0; i < float32Array.length; i++) {
-                int16Array[i] = Math.min(1, float32Array[i]) * 0x7FFF;
-            }
-            return int16Array;
-        }
-        var audioState = 'idle';
-        var audioSource = null;
-
-        $('#play-button').on('click', function() {
-            switch (audioState) {
-                case 'idle':
-                    var message = $(this).data('message');
-
-                    // Change the button's text to 'Loading...'
-                    $(this).text('Loading...');
-
-                    fetch('/speak', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({text: message})
-                    })
-                    .then(response => response.arrayBuffer())
-                    .then(data => {
-                        var audioData = new Blob([data], {type: 'audio/mpeg'});
-                        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                        audioContext.decodeAudioData(data, function(buffer) {
-                            audioSource = audioContext.createBufferSource();
-                            audioSource.buffer = buffer;
-                            audioSource.connect(audioContext.destination);
-                            audioSource.start(0);
-
-                            // Add this event handler
-                            audioSource.onended = function() {
-                                $('#play-button').text('Play');
-                                audioState = 'idle';
-                            };
-
-                            // Change the button's text to 'Stop'
-                            $('#play-button').text('Stop');
-                            audioState = 'playing';
-
-                            // Show the 'Download' button
-                            $('#download-button').show().data('audioData', audioData);
-                        });
-                    })
-                    .catch(error => console.error(error));
-
-                    break;
-                case 'playing':
-                    // Stop the audio
-                    audioSource.stop();
-
-                    // Change the button's text to 'Play'
-                    $(this).text('Play');
-                    audioState = 'idle';
-
-                    break;
-            }
-        });
-        $('#download-button').on('click', function() {
-            var audioData = $(this).data('audioData');
-
-            // Create a Blob from the audio data
-            var mp3Blob = new Blob([audioData], {type: 'audio/mpeg'});
-
-            // Create a URL for the Blob
-            var url = URL.createObjectURL(mp3Blob);
-
-            // Create a temporary 'a' element
-            var a = document.createElement('a');
-
-            // Set the 'href' attribute to the URL
-            a.href = url;
-
-            // Set the 'download' attribute to the filename
-            a.download = 'audio.mp3';
-
-            // Trigger a click event on the 'a' element
-            a.click();
-        });
-    }); 
+    });
 </script>
 
 {% endblock %}

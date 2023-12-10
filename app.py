@@ -3,15 +3,13 @@ import requests
 from dotenv import load_dotenv
 import os
 import json
-from openai import OpenAI
-import csv
 from services.elevenlabs_service import ElevenLabsService
 from services.openai_service import OpenAIService
 import base64
 import hashlib
 import traceback
 import logging
-import csv
+
 
 app = Flask(__name__)
 load_dotenv()
@@ -99,26 +97,13 @@ def delete_assistant(assistant_id):
 
 @app.route('/threads')
 def get_threads():
-    threads = []
-
-    # Read the thread information from the CSV file
-    with open('threads.csv', 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            thread = {
-                'id': row[0],
-                'object': row[1],
-                'created_at': row[2],
-                'metadata': row[3],
-            }
-            threads.append(thread)
-
+    threads = openai_service.read_threads_from_csv()
     return render_template('threads.html', threads=threads, title='Threads')
 
 @app.route('/create_thread', methods=['POST'])
 def create_thread():
     try:
-        thread = client.beta.threads.create()
+        thread = openai_service.create_thread()
         thread_dict = {
             'id': thread.id,
             'object': thread.object,
@@ -126,71 +111,18 @@ def create_thread():
             'metadata': thread.metadata,
         }
 
-        # Store the thread information in a CSV file
-        with open('threads.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([thread.id, thread.object, thread.created_at, thread.metadata])
+        openai_service.save_thread_to_csv(thread)
 
         return jsonify(thread_dict), 201
     except Exception as e:
         print(f"Error creating thread: {e}")  # Log the error
         return jsonify({'error': str(e)}), 500
-
-# This route creates a threads message
-@app.route('/create_thread_message', methods=['POST'])
-def create_thread_message():
-    thread_id = request.json.get('thread_id')
-    content = request.json.get('content')
-
-    try:
-        thread_message = client.beta.threads.messages.create(
-            thread_id,
-            role="user",
-            content=content
-        )
-        thread_message_dict = {
-            'id': thread_message.id,
-            'object': thread_message.object,
-            'created_at': thread_message.created_at,
-            'thread_id': thread_message.thread_id,
-            'role': thread_message.role,
-            'content': thread_message.content,
-            'file_ids': thread_message.file_ids,
-            'assistant_id': thread_message.assistant_id,
-            'run_id': thread_message.run_id,
-            'metadata': thread_message.metadata,
-        }
-        return jsonify(thread_message_dict), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
     
 @app.route('/threads/<thread_id>', methods=['GET'])
 def get_messages(thread_id):
     try:
-        thread_messages = client.beta.threads.messages.list(thread_id=thread_id)
-        messages_list = []
-        for message in thread_messages.data:
-            # Extract the text of the message
-            text = ''
-            if message.content and message.content[0].type == 'text':
-                text = message.content[0].text.value
-
-            message_dict = {
-                'id': message.id,
-                'object': message.object,
-                'created_at': message.created_at,
-                'thread_id': message.thread_id,
-                'role': message.role,
-                'content': text,
-                'file_ids': message.file_ids,
-                'assistant_id': message.assistant_id,
-                'run_id': message.run_id,
-                'metadata': message.metadata,
-            }
-            messages_list.append(message_dict)
-
-        # Render the messages in a new HTML page
-        return render_template('thread.html', thread_id = thread_id,messages=messages_list)
+        messages_list = openai_service.get_thread_messages(thread_id)
+        return render_template('thread.html', thread_id=thread_id, messages=messages_list)
     except Exception as e:
         return str(e), 500
 
@@ -310,6 +242,14 @@ def create_run():
 
 
 
+# At the top of app.py
+# Ensure openai_service and elevenlabs_service are imported and instantiated
+
+from flask import jsonify, send_file
+import io
+
+# ... [other imports and code] ...
+
 @app.route('/chat', methods=['POST', 'GET'])
 def get_chat():
     if request.method == 'POST':
@@ -319,19 +259,17 @@ def get_chat():
         if messages is None:
             return jsonify({'error': 'No messages provided'}), 400
 
-        response = client.chat.completions.create(
-            model="gpt-4-1106-preview",
-            messages=messages,
-        )       
+        try:
+            assistant_message = openai_service.get_chat_completions(messages)
+            return jsonify({'assistant_message': assistant_message})
 
-        assistant_message = response.choices[0].message.content
-        audio = generate_audio(assistant_message, 'EXAVITQu4vr4xnSDxMaL')
-
-        return jsonify({'message': assistant_message, 'audio': audio}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
 
     else:
-        voices = elevenlabs_service.list_voices()
-        return render_template('chat.html', voices=voices, title='Chat')
+        return render_template('chat.html', title='Chat')
+
+
 
 @app.route('/speak', methods=['POST'])
 def speak():
