@@ -241,15 +241,6 @@ def create_run():
         return jsonify({'error': str(e)}), 500
 
 
-
-# At the top of app.py
-# Ensure openai_service and elevenlabs_service are imported and instantiated
-
-from flask import jsonify, send_file
-import io
-
-# ... [other imports and code] ...
-
 @app.route('/chat', methods=['POST', 'GET'])
 def get_chat():
     if request.method == 'POST':
@@ -270,7 +261,7 @@ def get_chat():
         return render_template('chat.html', title='Chat')
 
 
-
+# Route for generate speech with OpenAI
 @app.route('/speak', methods=['POST'])
 def speak():
     data = request.get_json()
@@ -306,9 +297,9 @@ def text_to_speech():
             return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
         # Convert settings values to appropriate types
         settings = {
-            'stability': float(settings.get('stability', 0.71)),
-            'clarity': float(settings.get('clarity', 0.5)),
-            'style': float(settings.get('style', 0.1)),
+            'stability': float(settings.get('stabilitysetting', 0.71)),
+            'clarity': float(settings.get('claritysetting', 0.5)),
+            'style': float(settings.get('stylesetting', 0.1)),
             'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
         }
 
@@ -326,6 +317,60 @@ def text_to_speech():
         print(f"An error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
+# Route for generate multiple voices 
+@app.route('/generate-multiple-voices', methods=['POST'])
+def generate_multiple_voices():
+    data = request.get_json()
+    sentences = data.get('sentences')
+
+    if sentences is None:
+        return jsonify({'error': 'No sentences provided'}), 400
+
+    try:
+        # Initialize the ElevenLabsService
+        service = ElevenLabsService()
+
+        # Generate the multiple voices
+        audio_path = service.generate_multiple_voices(sentences)
+
+        return jsonify({'audio_file': audio_path})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# Route for generate multiple voices 
+@app.route('/generate-multiple-voices-overlay', methods=['POST'])
+def generate_multiple_voices_overlay():
+    data = request.get_json()
+    sentences = data.get('sentences')
+    app.logger.info(f"Received JSON data: {data}")  # Log the JSON payload
+    first_voice_id = data.get('voice_id')
+    settings = data.get('settings')
+
+    if not settings:
+        return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
+    # Convert settings values to appropriate types
+    settings = {
+        'stability': float(settings.get('stabilitysetting', 0.71)),
+        'clarity': float(settings.get('claritysetting', 0.5)),
+        'style': float(settings.get('stylesetting', 0.1)),
+        'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
+    }
+    
+    if sentences is None:
+        return jsonify({'error': 'No sentences provided'}), 400
+
+    try:
+        # Initialize the ElevenLabsService
+        service = ElevenLabsService()
+
+        # Generate the multiple voices
+        audio_path = service.generate_multiple_voices_overlay(sentences, first_voice_id, settings)
+
+        return jsonify({'audio_file': audio_path})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/elevenlabs')
 def elevenlabs():
@@ -340,6 +385,7 @@ def get_voices():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Generate OpenAI speech
 @app.route('/generate_speech', methods=['POST'])
 def generate_speech():
     try:

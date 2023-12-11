@@ -98,17 +98,10 @@ footer div {
     margin-top: 40px; /* Ruimte aan de bovenkant */
 }
 
-/* Formulier en invoervelden stijlen 
-.container {
-    max-width: 900px; 
-    margin: auto; 
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 2rem;
+
+.card-body.text-muted {
+    white-space: pre-line; /* Behoudt witregels en andere opmaak */
 }
-*/
 
 .form-card {
     background-color: #f8f9fa; /* Achtergrondkleur voor de kaart-achtige lay-out */

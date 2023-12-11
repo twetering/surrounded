@@ -66,12 +66,15 @@ class OpenAIService:
             messages_list.append(message_dict)
         return messages_list
 
+    
     def get_chat_completions(self, messages):
         response = self.client.chat.completions.create(
             model="gpt-4-1106-preview",
             messages=messages,
         )
-        return response.choices[0].message.content
+        answer = response.choices[0].message.content
+        html = answer.replace('\n', '<br/>')
+        return html
 
     # Assuming generate_audio is a method that needs to be refactored from app.py
     def generate_audio(self, message, voice_id):

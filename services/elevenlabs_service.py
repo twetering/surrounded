@@ -4,7 +4,11 @@ import threading
 from elevenlabs.api import User, Models, History
 import os
 import datetime
+import random
+from pydub import AudioSegment
 from elevenlabs import VoiceDesign, Gender, Age, Accent, play
+import io
+
 
 set_api_key(os.getenv('ELEVENLABS_API_KEY'))
 elevenlabs_model="eleven_multilingual_v2"
@@ -16,11 +20,11 @@ class ElevenLabsService:
         return user
 
     def list_voices(self):
-        """ Lijst alle beschikbare stemmen op. """
+        #List all available voices.
         return voices()
     
     def generate_speech(self, text, voice_id, settings):
-        # Generate speech from text with customized settings."""
+        # Generate speech from text with customized settings.
         # If settings are provided, construct a VoiceSettings object
         
         if settings:
@@ -47,6 +51,122 @@ class ElevenLabsService:
             print(f"Error generating speech: {e}")
             raise e
 
+    def generate_multiple_voices(self, sentences):
+        # Get the list of voices
+        voices = self.list_voices()
+
+        # Check if voices are available
+        if not voices:
+            raise Exception("No voices available")
+
+        audio_segments = []
+
+        for sentence in sentences:
+            # Randomly select a voice
+            voice = random.choice(voices)
+
+            try:
+                # Generate speech for the sentence
+                audio_data = self.generate_speech(sentence, voice.voice_id, None)
+
+                # Save the audio data to a .mp3 file
+                filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice.voice_id}.mp3"
+                with open(filename, 'wb') as f:
+                    f.write(audio_data)
+
+                # Load the .mp3 file as an AudioSegment
+                audio_segment = AudioSegment.from_file(filename, format="mp3")
+
+                # Add the audio segment to the list
+                audio_segments.append(audio_segment)
+
+                # Delete the .mp3 file after it's loaded to save space
+                os.remove(filename)
+            except Exception as e:
+                print(f"Error processing sentence '{sentence}' with voice '{voice.voice_id}': {e}")
+                continue  # Skip to the next sentence if an error occurs
+
+        # Check if any audio segments were successfully processed
+        if not audio_segments:
+            raise Exception("No audio segments were successfully processed")
+
+        # Combine all the audio segments into one
+        combined_audio = sum(audio_segments)
+
+        # Create the path to the 'static/audio' directory
+        directory = os.path.join('static', 'audio')
+
+        # Create the filename for the combined audio
+        filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
+
+        # Create the full path to the combined audio file
+        combined_filename = os.path.join(directory, filename)
+
+        # Save the combined audio to a .mp3 file
+        combined_audio.export(combined_filename, format='mp3')
+
+        return combined_filename
+
+    # Multiple voices overlayed on each other
+    def generate_multiple_voices_overlay(self, sentences,first_voice_id, settings):
+        voices = self.list_voices()
+        if not voices:
+            raise Exception("No voices available")
+
+        longest_duration = 0
+        audio_segments = []
+
+        for i, sentence in enumerate(sentences):
+            if i == 0:
+                voice_id = first_voice_id
+            else:
+                voice = random.choice(voices)
+                voice_id = voice.voice_id
+            voice = random.choice(voices)
+            try:
+                audio_data = self.generate_speech(sentence, voice_id, settings)
+                filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice.voice_id}.mp3"
+                with open(filename, 'wb') as f:
+                    f.write(audio_data)
+
+                audio_segment = AudioSegment.from_file(filename, format="mp3")
+                os.remove(filename)
+
+                audio_segments.append(audio_segment)
+                longest_duration = max(longest_duration, len(audio_segment))
+            except Exception as e:
+                print(f"Error: {e}")
+                continue
+
+        # Gebruik het langste segment als basis
+        combined_audio = AudioSegment.silent(duration=longest_duration)
+
+        # Bereken starttijden voor elk segment
+        num_segments = len(audio_segments)
+        segment_spacing = longest_duration / max(1, num_segments - 1)
+
+        for i, segment in enumerate(audio_segments):
+            start_time = int(i * segment_spacing)  # Rond af naar het dichtstbijzijnde geheel getal
+            fade_duration = int(min(1000, segment_spacing / 2))  # Fade-duur, maximaal 1 seconde
+
+            # Fade in en fade out
+            segment = segment.fade_in(fade_duration).fade_out(fade_duration)
+
+            # Overlay het segment op de berekende starttijd
+            combined_audio = combined_audio.overlay(segment, position=start_time)
+
+        if combined_audio.duration_seconds == 0:
+            raise Exception("No audio segments were successfully processed")
+
+        directory = os.path.join('static', 'audio')
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
+        combined_filename = os.path.join(directory, filename)
+        combined_audio.export(combined_filename, format='mp3')
+
+        return combined_filename
 
     def clone_voice(self, name, description, sample_files):
         """ Clone een stem. """
@@ -128,5 +248,6 @@ class ElevenLabsService:
             accent_strength=accent_strength,
         )
         return design
+    
     
 
