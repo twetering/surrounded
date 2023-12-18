@@ -380,6 +380,7 @@ def elevenlabs():
 def get_voices():
     try:
         voices = elevenlabs_service.list_voices()
+        voices = [voice for voice in voices if voice.category == 'cloned']
         voices_data = [{'voice_id': voice.voice_id, 'name': voice.name} for voice in voices]
         return jsonify(voices_data)
     except Exception as e:

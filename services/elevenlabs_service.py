@@ -54,7 +54,8 @@ class ElevenLabsService:
     def generate_multiple_voices(self, sentences):
         # Get the list of voices
         voices = self.list_voices()
-
+        voices = [voice for voice in voices if voice.category == 'cloned']
+        
         # Check if voices are available
         if not voices:
             raise Exception("No voices available")
@@ -110,6 +111,7 @@ class ElevenLabsService:
     # Multiple voices overlayed on each other
     def generate_multiple_voices_overlay(self, sentences,first_voice_id, settings):
         voices = self.list_voices()
+        voices = [voice for voice in voices if voice.category == 'cloned']
         if not voices:
             raise Exception("No voices available")
 

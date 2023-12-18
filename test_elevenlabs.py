@@ -1,6 +1,6 @@
 
 import os
-from elevenlabs import voices, Voice, VoiceSettings, generate, clone, stream, set_api_key, play, save
+from elevenlabs import Voices, Voice, VoiceSettings, generate, clone, stream, set_api_key, play, save
 import threading
 from elevenlabs.api import User, Models, History
 import datetime
@@ -23,5 +23,12 @@ def test_text_to_speech():
     
     play(audio)
 
+def print_cloned_voices():
+    voices = Voices.from_api()
+    cloned_voices = [voice for voice in voices if voice.category == 'cloned']
+    for voice in cloned_voices:
+        print(voice)
+
 if __name__ == "__main__":
     test_text_to_speech()
+    print_cloned_voices()
