@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Speech Synthesis Card -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="mb-4">Voice Designer</h2>
+                    <p>Generate custom voices.</p>
+                <div>
+                    <button id="generateRandomVoice" class="btn btn-primary">Generate Random Voice Design</button>
+                </div> 
+                    <div id="loading-spinner" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="audio-result"></div>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function generateRandomVoiceDesign() {
+        // Show loading spinner
+        document.getElementById('loading-spinner').style.display = 'block';
+
+        // Make a fetch request to generate a random voice design
+        fetch('/generate_voice_design', {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data parsed:", data);
+            document.getElementById('loading-spinner').style.display = 'none';
+            const audioResult = document.getElementById('audio-result');
+            if(data.audio_file) {
+                const audio = new Audio(data.audio_file);
+                audio.controls = true;
+                audioResult.innerHTML = '';
+
+                // Create elements to display the voice name and text
+                const voiceNameElement = document.createElement('h3');
+                voiceNameElement.textContent = data.voice_name;
+                const textElement = document.createElement('p');
+                textElement.textContent = data.voice_text;
+
+                // Append the audio and info elements to the audio result
+                audioResult.appendChild(voiceNameElement);
+                audioResult.appendChild(textElement);
+                audioResult.appendChild(audio);
+
+            } else {
+                console.error("No audio data received");
+                audioResult.innerHTML = '<p>No audio generated. Check the console for errors.</p>';
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById('loading-spinner').style.display = 'none';
+            const audioResult = document.getElementById('audio-result');
+            audioResult.innerHTML = '<p>An error occurred. Check the console for details.</p>';
+        });
+    }
+
+    // Event handler for the "Generate Random Voice Design" button
+    document.getElementById('generateRandomVoice').addEventListener('click', generateRandomVoiceDesign);
+</script>
+
+
+
+{% endblock %}

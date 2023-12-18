@@ -21,17 +21,27 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('get_chat') }}">Chat</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Generate text
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url_for('get_chat') }}">Chat</a>
+                            <a class="dropdown-item" href="{{ url_for('get_assistants') }}">Assistants</a>
+                            <a class="dropdown-item" href="{{ url_for('get_threads') }}">Threads</a>
+                        </div>  
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('get_assistants') }}">Assistants</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('get_threads') }}">Threads</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('elevenlabs') }}">ElevenLabs</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Text-to-Voice
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url_for('elevenlabs') }}">Elevenlabs</a>
+                            <a class="dropdown-item" href="{{ url_for('text_to_voice') }}">Text-to-Voice</a>
+                            <a class="dropdown-item" href="{{ url_for('speech_to_speech') }}">Speech-to-Speech</a>
+                            <a class="dropdown-item" href="{{ url_for('multiple_voices') }}">Multiple Voices</a>
+                            <a class="dropdown-item" href="{{ url_for('voice_designer') }}">Voice Designer</a>
+                        </div>
                     </li>
                 </ul>
             </div>

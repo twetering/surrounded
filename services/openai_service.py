@@ -75,6 +75,17 @@ class OpenAIService:
         answer = response.choices[0].message.content
         html = answer.replace('\n', '<br/>')
         return html
+    
+    def get_json_completions(self, messages):
+        response = self.client.chat.completions.create(
+            model="gpt-4-1106-preview",
+            response_format={ "type": "json_object" },
+            messages=messages,
+        )
+        answer = response.choices[0].message.content
+        #html = answer.replace('\n', '<br/>')
+        print("Answer json: ", answer)
+        return answer
 
     # Assuming generate_audio is a method that needs to be refactored from app.py
     def generate_audio(self, message, voice_id):

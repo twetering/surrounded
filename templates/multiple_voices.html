@@ -1,0 +1,389 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Speech Synthesis Card -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="mb-4">Multiple Voices</h2>
+                    <p>Experiment with Multiple Voices.</p>
+                    <form id="form">
+                    <div class="form-card">
+                        <!-- Task Section -->
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <h3 class="m-0">Task</h3>
+                            </div>
+                            <div class="col">
+                                <button id="btn-multiple-voices" type="button" class="btn btn-outline-primary btn-task">Multiple Voices</button>
+                            </div>
+                        </div>
+
+                        <!-- Settings Section -->
+                        <div class="form-row align-items-center mb-3">
+                            <div class="col-auto">
+                                <h3 class="m-0">Settings</h3>
+                            </div>
+                            <div class="col">
+
+                        <!-- Voice settings panel -->
+                        <div class="voice-settings">
+                            <h3 class="toggle-settings">Voice Settings</h3>
+                            <div class="settings-panel">
+                                <div class="setting">
+                                    <label for="voice-select">Voice</label>
+                                    <select id="voice-select" class="form-control">
+                                        <!-- Options are dynamically loaded via back-end -->
+                                    </select>
+                                </div>
+                                <div class="setting">
+                                    <label for="stabilitysetting">Stability: <span id="stability-value">0.71</span></label>
+                                    <input type="range" id="stabilitysetting" name="stabilitysetting" min="0" max="1" step="0.01" value="0.71">
+                                </div>
+                                <div class="setting">
+                                    <label for="claritysetting">Clarity + Similarity Enhancement: <span id="clarity-value">0.5</span></label>
+                                    <input type="range" id="claritysetting" name="claritysetting" min="0" max="1" step="0.01" value="0.5">
+                                </div>
+                                <div class="setting">
+                                    <label for="stylesetting">Style Exaggeration: <span id="style-value">0.0</span></label>
+                                    <input type="range" id="stylesetting" name="stylesetting" min="0" max="1" step="0.01" value="0.0">
+                                </div>
+                                <div class="setting">
+                                    <label for="speaker-boost">Speaker Boost</label>
+                                    <input type="checkbox" id="speaker-boost" name="speaker-boost" checked>
+                                </div>
+                                <div class="setting">
+                                    <label for="overlay">Use overlay</label>
+                                    <input type="checkbox" id="overlayCheckbox" name="overlay">
+                                </div>
+                                <div class="setting">
+                                    <label for="model-select">Model</label>
+                                    <select id="model-select" class="form-control">
+                                        <option>Eleven Multilingual v2</option>
+                                        <!-- Other model options -->
+                                    </select>
+                                </div>
+
+                                <button type="button" id="default">To Default</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">   <!-- Text Section -->
+                    <div class="form-row align-items-center mb-3">
+                        <div class="col-auto">
+                            <h3 class="m-0">Text</h3>
+                        </div>
+                        <div class="col">
+                            <textarea id="text-input" class="form-control" rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-submit" type="submit" class="btn btn-primary">Generate Multiple Voices</button>
+                </div>
+            </form>
+            <div class="col-md-12">
+                <!-- Resultaat Sectie -->
+                <div id="audio-result" class="mt-4">
+                    <!-- Hier komt de gegenereerde spraak te staan -->
+                    <!-- Laad Spinner (verborgen totdat actief) -->
+                    <div id="loading-spinner" class="text-center" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Laden...</span>
+                        </div>
+                    </div>
+                </div>        
+            </div>      
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">    <!-- History List -->
+                    <h2 class="mb-4">Speech History</h2>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Tekst</th>
+                            <th>Acties</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-items">
+                        <!-- History items are loaded here dynamically -->
+                    </tbody>
+                </table>
+                </div>
+            </div>  
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+
+function truncateText(text, maxLength) {
+    if (text.length > maxLength) {
+        return text.substring(0, maxLength) + '...';
+    }
+    return text;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    
+
+    resetEventHandlers()
+    // Set default values for the voice settings
+    const defaultSettings = {
+        stabilitysetting: 0.71,
+        claritysetting: 0.5,
+        stylesetting: 0.0,
+        speakerBoost: true
+    };
+
+    function setDefaultValues() {
+        document.getElementById('stabilitysetting').value = '0.71';
+        document.getElementById('claritysetting').value = '0.5';
+        document.getElementById('stylesetting').value = '0.0';
+        document.getElementById('speaker-boost').checked = defaultSettings.speakerBoost;
+        document.getElementById('stability-value').textContent = '0.71';
+        document.getElementById('clarity-value').textContent = '0.5';
+        document.getElementById('style-value').textContent = '0.0';
+    }
+
+    // Set the sliders to default values on page load
+    setDefaultValues();
+
+    window.onload = function () {
+        document.getElementById('stabilitysetting').addEventListener('input', function () {
+            document.getElementById('stability-value').textContent = this.value;
+        });
+        document.getElementById('claritysetting').addEventListener('input', function () {
+            document.getElementById('clarity-value').textContent = this.value;
+        });
+        document.getElementById('stylesetting').addEventListener('input', function () {
+            document.getElementById('style-value').textContent = this.value;
+        });
+    }
+
+        // Reset to default button click event
+document.getElementById('default').addEventListener('click', function() {
+    setDefaultValues();
+});
+
+// Add event listeners for sliders to update the settings in real-time
+document.querySelectorAll('input[type=range]').forEach(slider => {
+    slider.addEventListener('input', function() {
+        // Update the voice settings based on the slider values
+        console.log(this.id + ' is now: ' + this.value);
+    });
+});
+
+// JavaScript for toggling the voice settings panel
+document.querySelector('.toggle-settings').addEventListener('click', function() {
+    this.classList.toggle('active');
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+        panel.style.display = "none";
+    } else {
+        panel.style.display = "block";
+    }
+});
+
+// Set the default submit event handler
+$('#form').on('submit', function(e) {
+    e.preventDefault();
+});
+
+    // When the 'Multiple voices' button is clicked
+    $('#btn-multiple-voices').on('click', function() {
+
+        resetEventHandlers();
+
+        // Set the placeholder for the text-input field
+        $('#text-input').val("Mom?\nMummy...\nMommy!\nMum?\nMoooom!");
+
+        // Remove the 'active' class from all task buttons
+        $('.btn-task').removeClass('active');
+
+        // Add the 'active' class to the clicked button
+        $(this).addClass('active');
+
+        // Change the form submit event
+        $('#form').off('submit').on('submit', function(e) {
+            e.preventDefault();
+            generateMultipleVoices();
+        });
+    });
+
+    // Load voices and history
+    loadVoices();
+    loadHistory();
+});
+
+function loadVoices() {
+    fetch('/get_voices')
+        .then(response => {
+            console.log("Response received:", response); // Log de response
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data parsed:", data); // Log de verwerkte data
+            const select = document.getElementById('voice-select');
+            select.innerHTML = ''; // Leegmaken voor het geval dat er al opties zijn
+            data.forEach(voice => {
+                let option = document.createElement('option');
+                option.value = voice.voice_id;
+                option.textContent = voice.name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading voices:', error); // Log eventuele fouten
+        });
+}
+
+function loadHistory() {
+    return fetch('/get_history')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const historyList = document.getElementById('history-items');
+            historyList.innerHTML = '';
+            data.forEach(item => {
+                let row = document.createElement('tr');
+                let truncatedText = truncateText(item.text, 100); // Tekst inkorten na 20 karakters
+                row.innerHTML = `
+                    <td>${item.voice_name}</td>
+                    <td>${new Date(item.date).toLocaleString()}</td>
+                    <td>created</td>
+                    <td>${truncatedText}</td>
+                `;
+
+                // Voeg een cel toe voor het audio-element
+                let audioCell = document.createElement('td');
+                let audio = new Audio(`/get_audio/${item.history_item_id}`);
+                audio.controls = true;
+                audioCell.appendChild(audio);
+                row.appendChild(audioCell);
+
+                // Append the row to the history list
+                historyList.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+function generateMultipleVoices() {
+    // Show loading spinner
+    document.getElementById('loading-spinner').style.display = 'block';
+
+    const text = document.getElementById('text-input').value;
+    const voiceId = document.getElementById('voice-select').value;
+
+    // Get current voice settings values
+    const stabilityValue = document.getElementById('stabilitysetting').value;
+    const clarityValue = document.getElementById('claritysetting').value;
+    const styleValue = document.getElementById('stylesetting').value;
+    const speakerBoostValue = document.getElementById('speaker-boost').checked;
+
+    const voiceSettings = {
+        stabilitysetting: parseFloat(stabilityValue),
+        claritysetting: parseFloat(clarityValue),
+        stylesetting: parseFloat(styleValue),
+        speakerBoost: speakerBoostValue
+    };
+    // Get the value of the checkbox
+    var useOverlay = document.getElementById('overlayCheckbox').checked;
+
+    // Choose the route based on the value of the checkbox
+    var route = useOverlay ? '/generate-multiple-voices-overlay' : '/generate-multiple-voices';
+
+    // Log for debugging
+    console.log("Generating multiple voices for:", text, "with voice ID:",voiceId, "and voice settings:", voiceSettings, "Use overlay:", useOverlay);
+
+    // Get the sentences from the text field
+    var sentences = $('#text-input').val().split('\n');
+
+    // Check if sentences are not empty
+    if (!sentences.every(Boolean)) {
+        alert('Please make sure there are no empty lines.');
+        return;
+    }
+
+    // Make the POST request to the Flask backend
+    fetch(route, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            sentences: sentences,
+            voice_id: voiceId,
+            settings: voiceSettings
+        })
+    })
+    .then(response => {
+        console.log("Response received:", response);
+        return response.json();
+    })
+    .then(data => {
+        console.log("Data parsed:", data);
+        document.getElementById('loading-spinner').style.display = 'none';
+        const audioResult = document.getElementById('audio-result');
+        if(data.audio_file) {
+            const audio = new Audio(data.audio_file);
+            audio.controls = true;
+            audioResult.innerHTML = '';
+            audioResult.appendChild(audio);
+            loadHistory(); // Update history
+        } else {
+            console.error("No audio url received");
+            audioResult.innerHTML = '<p>No audio generated. Check the console for errors.</p>';
+            loadHistory(); // Update history
+        }
+    })
+    .catch(error => {
+        console.error('Error generating speech:', error);
+        document.getElementById('loading-spinner').style.display = 'none';
+    });
+}
+
+
+// Functie om audio direct na generatie af te spelen
+function playGeneratedAudio(base64Audio) {
+    const audio = new Audio('data:audio/wav;base64,' + base64Audio);
+    audio.play();
+}
+
+// Functie om audio uit de geschiedenis af te spelen
+function playHistoryAudio(historyItemId) {
+    const audioUrl = `/get_audio/${historyItemId}`;
+    const audio = new Audio(audioUrl);
+    audio.play();
+}
+
+function resetEventHandlers() {
+    const form = $('#form');
+    // Verwijder alle huidige event handlers
+    form.off();
+}
+
+</script>
+
+{% endblock %}

@@ -5,10 +5,12 @@ import os
 import json
 from services.elevenlabs_service import ElevenLabsService
 from services.openai_service import OpenAIService
+from elevenlabs import VoiceDesign, Gender, Age, Accent, play
 import base64
 import hashlib
 import traceback
 import logging
+import random
 
 
 app = Flask(__name__)
@@ -376,6 +378,22 @@ def generate_multiple_voices_overlay():
 def elevenlabs():
     return render_template('elevenlabs.html',title='Elevenlabs')
 
+@app.route('/voice_designer')
+def voice_designer():
+    return render_template('voice_designer.html',title='Voice Designer')
+
+@app.route('/text_to_voice')
+def text_to_voice():
+    return render_template('text_to_voice.html',title='Text-to-speech')
+
+@app.route('/speech_to_speech')
+def speech_to_speech():
+    return render_template('speech_to_speech.html',title='Speech-to-speech')
+
+@app.route('/multiple_voices')
+def multiple_voices():
+    return render_template('multiple_voices.html',title='Multiple voices')
+
 @app.route('/get_voices')
 def get_voices():
     try:
@@ -401,8 +419,6 @@ def generate_speech():
         return jsonify({'audio': audio_base64})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
 
 @app.route('/save_audio', methods=['POST'])
 def save_audio():
@@ -433,6 +449,113 @@ def get_audio(history_item_id):
             return jsonify({'error': 'Audio niet gevonden'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# Function to get a random sample text from the JSON file
+def get_sample_text(design):
+    samples = design.get('samples', {})
+    backup_samples = [
+        "Surprise! How odd, I'm sad, yet curious.",
+        "Ah, such joy! Wait, fear grips me...",
+        "Anger boils. Now, calm. A whirlwind of feelings.",
+        "I am so angry that I want to scream!!",
+        "AAAAAAAA!!! Get out of my way!!"
+    ]
+    sample_keys = ['sample1', 'sample2', 'sample3']
+    #selected_samples = random.sample(sample_keys, 2)  # Select two sample keys
+    #text = ''.join(samples.get(key, backup_samples[i]) for i, key in enumerate(selected_samples))  # Concatenate the selected samples
+    text = ' '.join(samples.get(key, backup_samples[i]) for i, key in enumerate(sample_keys))  # Concatenate the samples
+    return text
+
+# Function to convert design to usable voice
+def build_voice_from_design(design):
+    # Ensure that assisted_voice is a dictionary
+    if isinstance(design, str):
+        try:
+            design = json.loads(design)
+        except json.JSONDecodeError:
+            print("Error: assisted_voice is not a valid JSON string")
+            return None
+    
+    # Get the random text from the json file
+    text = get_sample_text(design)
+
+    return VoiceDesign(
+        name=design['name'],
+        text=text,
+        voice_description=design['description'],
+        gender=Gender[design['gender']],
+        age=Age[design['age']],
+        accent=Accent[design['accent']],
+        accent_strength=design['accent_strength'],
+    )
+
+def generate_random_variables():
+    accents = ['australian', 'indian', 'african', 'american', 'british']
+    genders = ['male', 'female']
+    age_groups = ['young', 'middle_aged', 'old']
+
+    voice_accent = random.choice(accents)
+    voice_gender = random.choice(genders)
+    voice_strength = round(random.uniform(0.3, 1.9), 2)  # Rounded to 2 decimal places
+    voice_age = random.choice(age_groups)
+
+    return voice_accent, voice_gender, voice_strength, voice_age
+
+
+@app.route('/generate_voice_design', methods=['POST'])
+def generate_voice_design():
+    voice_accent, voice_gender, voice_strength, voice_age = generate_random_variables()
+    prompt =  f"""This is a conversation with a helpful assistant designed to output JSON. 
+        You help me design a voice for Elevenlabs. 
+        I will give you a voice design, and you will add: 
+        1. a creative description 
+        2. a suiting name and 
+        3. three sample sentences that suit the voice design:
+        - a positive sentence that introduces the speaker
+        - a neutral sentence that describes the voice
+        - a negative sentence with a lot of emotion
+
+        This is the voice design:
+        - Gender: {voice_gender}  
+        - Age: {voice_age}  
+        - Accent: {voice_accent} 
+        - Accent_strength on a scale from 0.3-1.9:: {voice_strength}
+
+        Below you find an example of an output format in JSON:
+        
+        {{
+                    "name": "Raj",
+                    "description": "Energetic and youthful, with a vibrant Indian accent, like an enthusiastic college student.",
+                    "gender": "male",
+                    "age": "young",
+                    "accent": "indian",
+                    "accent_strength": 0.8,
+                    "samples": {{
+                        "sample1": "Hey there! I'm Raj, buzzing with energy like a lively campus on a sunny day.",
+                        "sample2": "My voice carries the excitement of a new adventure, waiting just around the corner.",
+                        "sample3": "Imagine the thrill of a breakthrough discovery, that's the zest I bring to every word."
+                    }}
+                }},
+        """
+    #print("Prompt: ", prompt)
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant designed to output JSON."},
+        {"role": "user", "content": prompt}
+        ]
+    assisted_voice = openai_service.get_json_completions(messages)
+    voice_design = build_voice_from_design(assisted_voice)
+    print(f"Voice design: {voice_design}")
+    print(f"Playing voice design: {voice_design.name}")
+    
+    audio = voice_design.generate()
+    filename = hashlib.sha256(voice_design.name.encode()).hexdigest() + '.mp3'
+    audio_path = os.path.join('static', 'audio', filename)
+    with open(audio_path, 'wb') as f:
+        f.write(audio)
+
+    return jsonify({'audio_file': audio_path, 'voice_name': voice_design.name, 'voice_text': voice_design.text})
+
 
 
 if __name__ == "__main__":
