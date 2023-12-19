@@ -12,6 +12,23 @@ import traceback
 import logging
 import random
 
+# TO DO: Add logging
+# TO DO: Add error handling
+# TO DO: Add tests
+# TO DO: Add documentation
+# TO DO: Add authentication
+# TO DO: Add database
+# TO DO: Add Docker
+# TO DO: Add CI/CD
+# TO DO: Add frontend
+# TO DO: Add voice designer
+# TO DO: Add speech-to-speech
+# TO DO: Add speech-to-text
+# TO DO: Add Voice selection for multiple voices
+# TO DO: Add Background music
+# TO DO: Add Foley and sound effects
+# TO DO: Add Assistants
+
 
 app = Flask(__name__)
 load_dotenv()
@@ -446,7 +463,7 @@ def get_audio(history_item_id):
         if audio_data:
             return Response(audio_data, mimetype='audio/mpeg')
         else:
-            return jsonify({'error': 'Audio niet gevonden'}), 404
+            return jsonify({'error': 'Audio not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
