@@ -500,7 +500,7 @@ def build_voice_from_design(design):
     return VoiceDesign(
         name=design['name'],
         text=text,
-        voice_description=design['description'],
+        voice_description=design['voice_description'],
         gender=Gender[design['gender']],
         age=Age[design['age']],
         accent=Accent[design['accent']],
@@ -514,15 +514,15 @@ def generate_random_variables():
 
     voice_accent = random.choice(accents)
     voice_gender = random.choice(genders)
-    voice_strength = round(random.uniform(0.3, 1.9), 2)  # Rounded to 2 decimal places
+    voice_accent_strength = round(random.uniform(0.3, 1.9), 2)  # Rounded to 2 decimal places
     voice_age = random.choice(age_groups)
 
-    return voice_accent, voice_gender, voice_strength, voice_age
+    return voice_accent, voice_gender, voice_accent_strength, voice_age
 
 
 @app.route('/generate_voice_design', methods=['POST'])
 def generate_voice_design():
-    voice_accent, voice_gender, voice_strength, voice_age = generate_random_variables()
+    voice_accent, voice_gender, voice_accent_strength, voice_age = generate_random_variables()
     prompt =  f"""This is a conversation with a helpful assistant designed to output JSON. 
         You help me design a voice for Elevenlabs. 
         I will give you a voice design, and you will add: 
@@ -537,13 +537,13 @@ def generate_voice_design():
         - Gender: {voice_gender}  
         - Age: {voice_age}  
         - Accent: {voice_accent} 
-        - Accent_strength on a scale from 0.3-1.9:: {voice_strength}
+        - Accent_strength on a scale from 0.3-1.9:: {voice_accent_strength}
 
         Below you find an example of an output format in JSON:
         
         {{
                     "name": "Raj",
-                    "description": "Energetic and youthful, with a vibrant Indian accent, like an enthusiastic college student.",
+                    "voice_description": "Energetic and youthful, with a vibrant Indian accent, like an enthusiastic college student.",
                     "gender": "male",
                     "age": "young",
                     "accent": "indian",
@@ -566,12 +566,23 @@ def generate_voice_design():
     print(f"Playing voice design: {voice_design.name}")
     
     audio = voice_design.generate()
-    filename = hashlib.sha256(voice_design.name.encode()).hexdigest() + '.mp3'
+    filename = f"{voice_design.name}_{voice_design.accent}_{voice_design.gender}_{voice_design.accent_strength}.mp3"    
     audio_path = os.path.join('static', 'audio', filename)
     with open(audio_path, 'wb') as f:
         f.write(audio)
 
-    return jsonify({'audio_file': audio_path, 'voice_name': voice_design.name, 'voice_text': voice_design.text})
+    json = jsonify({
+        'audio_file': audio_path, 
+        'voice_name': voice_design.name,
+        'voice_description': voice_design.voice_description,
+        'voice_text': voice_design.text,
+        'voice_accent': voice_design.accent,
+        'voice_accent_strength': voice_design.accent_strength,
+        'voice_age': voice_design.age,
+        'voice_gender': voice_design.gender
+        })
+    
+    return json
 
 
 
