@@ -11,6 +11,7 @@ import hashlib
 import traceback
 import logging
 import random
+import glob
 
 # TO DO: Add logging
 # TO DO: Add error handling
@@ -341,7 +342,58 @@ def text_to_speech():
 def generate_multiple_voices():
     data = request.get_json()
     sentences = data.get('sentences')
+    app.logger.info(f"Received JSON data: {data}")  # Log the JSON payload
+    first_voice_id = data.get('voice_id')
+    settings = data.get('settings')
 
+    if sentences is None:
+        return jsonify({'error': 'No sentences provided'}), 400
+
+    if not settings:
+        return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
+    # Convert settings values to appropriate types
+    settings = {
+        'stability': float(settings.get('stabilitysetting', 0.71)),
+        'clarity': float(settings.get('claritysetting', 0.5)),
+        'style': float(settings.get('stylesetting', 0.1)),
+        'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
+    }
+    
+    if sentences is None:
+        return jsonify({'error': 'No sentences provided'}), 400
+    
+    try:
+        # Initialize the ElevenLabsService
+        service = ElevenLabsService()
+
+        # Generate the multiple voices
+        audio_path = service.generate_multiple_voices_overlay(sentences, first_voice_id, settings)
+
+        return jsonify({'audio_file': audio_path})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# This route includes background audio but does not overlay the voices
+@app.route('/generate-multiple-voices-bgaudio', methods=['POST'])
+def generate_multiple_voices_bgaudio():
+    data = request.get_json()
+    sentences = data.get('sentences')
+    app.logger.info(f"Received JSON data: {data}")  # Log the JSON payload
+    first_voice_id = data.get('voice_id')
+    settings = data.get('settings')
+    background_audio_file = data.get('bgaudio')
+
+    if not settings:
+        return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
+    # Convert settings values to appropriate types
+    settings = {
+        'stability': float(settings.get('stabilitysetting', 0.71)),
+        'clarity': float(settings.get('claritysetting', 0.5)),
+        'style': float(settings.get('stylesetting', 0.1)),
+        'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
+    }
+    
     if sentences is None:
         return jsonify({'error': 'No sentences provided'}), 400
 
@@ -349,14 +401,16 @@ def generate_multiple_voices():
         # Initialize the ElevenLabsService
         service = ElevenLabsService()
 
-        # Generate the multiple voices
-        audio_path = service.generate_multiple_voices(sentences)
+        # Generate the multiple voices with background audio overlay
+        audio_path = service.generate_multiple_voices_audio(sentences, first_voice_id, settings, background_audio_file)
 
         return jsonify({'audio_file': audio_path})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+
+
 # Route for generate multiple voices 
 @app.route('/generate-multiple-voices-overlay', methods=['POST'])
 def generate_multiple_voices_overlay():
@@ -390,6 +444,41 @@ def generate_multiple_voices_overlay():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+# This route includes background audio AND overlays the voices
+@app.route('/generate-multiple-voices-bgaudio-overlay', methods=['POST'])
+def generate_multiple_voices_bgaudio_overlay():
+    data = request.get_json()
+    sentences = data.get('sentences')
+    app.logger.info(f"Received JSON data: {data}")  # Log the JSON payload
+    first_voice_id = data.get('voice_id')
+    settings = data.get('settings')
+    background_audio_file = data.get('bgaudio')
+
+    if not settings:
+        return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
+    # Convert settings values to appropriate types
+    settings = {
+        'stability': float(settings.get('stabilitysetting', 0.71)),
+        'clarity': float(settings.get('claritysetting', 0.5)),
+        'style': float(settings.get('stylesetting', 0.1)),
+        'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
+    }
+    
+    if sentences is None:
+        return jsonify({'error': 'No sentences provided'}), 400
+
+    try:
+        # Initialize the ElevenLabsService
+        service = ElevenLabsService()
+
+        # Generate the multiple voices with background audio overlay
+        audio_path = service.generate_multiple_voices_bgaudio_overlay(sentences, first_voice_id, settings, background_audio_file)
+
+        return jsonify({'audio_file': audio_path})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/elevenlabs')
 def elevenlabs():
@@ -411,11 +500,41 @@ def speech_to_speech():
 def multiple_voices():
     return render_template('multiple_voices.html',title='Multiple voices')
 
+@app.route('/amatourflits')
+def amatourflits():
+    return render_template('amatourflits.html',title='Amatourflits')
+
+# Get all background audio files
+@app.route('/get_bgaudio')
+def get_bgaudio():
+
+    try:
+        # Get the list of all mp3 files in /static/audio/bgaudio
+        bgaudio_files = glob.glob('static/audio/bgaudio/*.mp3')
+
+        # Extract the filename from the full path
+        bgaudio_files = [{'filename': os.path.basename(bgaudio_file)} for bgaudio_file in bgaudio_files]
+
+        return jsonify(bgaudio_files)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get all voices
 @app.route('/get_voices')
 def get_voices():
     try:
         voices = elevenlabs_service.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
+        voices_data = [{'voice_id': voice.voice_id, 'name': voice.name} for voice in voices]
+        return jsonify(voices_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get voices with a specific label
+@app.route('/get_voices_with_label/<label_key>/<label_value>')
+def get_voices_with_label(label_key, label_value):
+    try:
+        voices = elevenlabs_service.list_voices_with_label(label_key, label_value)
         voices_data = [{'voice_id': voice.voice_id, 'name': voice.name} for voice in voices]
         return jsonify(voices_data)
     except Exception as e:

@@ -7,8 +7,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="mb-4">Multiple Voices</h2>
-                    <p>Experiment with Multiple Voices.</p>
+                    <h2 class="mb-4">Amatourflits</h2>
+                    <p>Jouw rit, jouw tourflits.</p>
                     <form id="form">
                     <div class="form-card">
                         <!-- Task Section -->
@@ -229,8 +229,8 @@ async function initialize() {
 
 
 async function loadVoices() {
-    // fetch('/get_voices_with_label/type/fun') // Get only the key/value type/fun voices
-    fetch('/get_voices')
+    // fetch('/get_voices') // Get all cloned voices
+    fetch('/get_voices_with_label/type/tourflits') // Get only the key/value type/amatourflits voices
         .then(response => {
             console.log("Response received:", response); // Log de response
             return response.json();

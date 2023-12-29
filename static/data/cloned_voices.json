@@ -1,0 +1,749 @@
+[
+    {
+        "voice_id": "1kNrDYEnJHvrOpbsa0r6",
+        "name": "TourTimmmermans",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "prZk2QLewo36pm0AnRrP",
+                "file_name": "Timmermans.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 670038,
+                "hash": "8407d03b40b0878d883c364ecb9911fb"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/1kNrDYEnJHvrOpbsa0r6/4e2ef9c1-4506-492a-9876-37ed38e3b0e7.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "6tlrf8kJqZ4Gev1Y1fX3",
+        "name": "Alexander",
+        "category": "cloned",
+        "description": "",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "0onydzTJVXFDaEeVr5Sk",
+                "file_name": "606b4f53-6db8-4bb6-9cd2-65046784f69c_46.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 983824,
+                "hash": "fcda281ee2c817d9ca2f9c20a8803855"
+            },
+            {
+                "sample_id": "2DXIb6X4HvuEd3w0VDhr",
+                "file_name": "ec4b5876-d273-4574-895f-bd192cffa057_78.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 426752,
+                "hash": "962b5594addd0b7516d48f99b4ac8cbe"
+            },
+            {
+                "sample_id": "8dbFzxErsAnffvONfhKS",
+                "file_name": "bba5c927-9ee6-4fc6-be77-2498a88a3a12_113.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 963012,
+                "hash": "ecf545f9ad87bf65b99f21690b95d473"
+            },
+            {
+                "sample_id": "Ah1WDtZi9rnypcDXqAu0",
+                "file_name": "0ed0ad87-d920-4f01-945a-82908e8c4816_169.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 926320,
+                "hash": "293fe095ab64fded2406520b20aa6675"
+            },
+            {
+                "sample_id": "DHdMAOXFJRzjXmHRCUMu",
+                "file_name": "294640bb-55c7-4c0c-a4f2-b5a38a33fee3_0.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 440864,
+                "hash": "afbfe04dc8f0dc717124dc10a8a86bee"
+            },
+            {
+                "sample_id": "I4IsaDfV1JUJJpzRAGwf",
+                "file_name": "alexanderpokivoice.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2942900,
+                "hash": "ea883a5ccc0a365444ad22ab30e001f3"
+            },
+            {
+                "sample_id": "If3YPQJ8yJNRdzThH3Dn",
+                "file_name": "44e25c33-c773-45fc-b180-bbdac475f183_84.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 447044,
+                "hash": "f36e0b4078a5f5bcb2aef5c926e74817"
+            },
+            {
+                "sample_id": "MghTxHhczYaV40QPtzia",
+                "file_name": "1d8c2e67-d646-43b6-bd43-e104a0848771_261.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 439100,
+                "hash": "816c3a569e4610e68b5389bdb5c0f143"
+            },
+            {
+                "sample_id": "RoGfTeQiUBHOKcic0XkM",
+                "file_name": "626a65cc-ba9a-445c-8a3b-fd9c91704d72_84.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 955952,
+                "hash": "8a9fcb196243bf7e0dcccb9aa2a6b979"
+            },
+            {
+                "sample_id": "UY581WqQ1RA1haWpzhYa",
+                "file_name": "c60dbecc-03cc-4d79-ad19-4fbfd2148642_195.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 934432,
+                "hash": "39515ebc9e9a45976bd9e71bcf0c4be8"
+            },
+            {
+                "sample_id": "XWgEmVb7AoeTDLYnG2of",
+                "file_name": "7bd27c03-7550-4c79-9c2b-85ff220d72f0_72.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 987176,
+                "hash": "642b1955f40c8b1c36883c836c204240"
+            },
+            {
+                "sample_id": "ZDizmanYmxkYk3JGMApe",
+                "file_name": "7bd27c03-7550-4c79-9c2b-85ff220d72f0_9.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 430104,
+                "hash": "36dd48804ae6cb1975b2bacbc38f52f9"
+            },
+            {
+                "sample_id": "bZYmsHXNYVhACECUFt6Z",
+                "file_name": "bba5c927-9ee6-4fc6-be77-2498a88a3a12_84.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 943076,
+                "hash": "718cb68c21288bf4ca3cd50cb20e3fbc"
+            },
+            {
+                "sample_id": "banRiYXZ3TA21bAW9QPs",
+                "file_name": "fe5e7376-c1d3-4481-af1e-2670fb6cbb5e_137.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 436984,
+                "hash": "d76e3549731e72f4056c44c8e8c6e710"
+            },
+            {
+                "sample_id": "kdbGJVcxvv7ov1ltHEKg",
+                "file_name": "b695d551-e940-4403-b238-ff27e5b33029_58.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 926144,
+                "hash": "d56b36271e03518746e3b4c35f4bb2a4"
+            },
+            {
+                "sample_id": "q5DrGmKUgD7zLHqmFOuj",
+                "file_name": "c4aa2787-67ac-4bf5-a41d-cd76f60677b2_23.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 433808,
+                "hash": "c22d60c7ca5d35435200e75d4706ddbf"
+            },
+            {
+                "sample_id": "tx7QgFAII8d4vWqi929p",
+                "file_name": "dc66d650-fbb3-409c-ba54-7803a00d6ec4_200.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 437160,
+                "hash": "cd79efa7a88dd17d8033813a0e72f521"
+            },
+            {
+                "sample_id": "v2PyRrvrM5hzV8is29ex",
+                "file_name": "cb428f24-56e2-4cd3-94f5-5e1c6c2f36bb_61.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 970064,
+                "hash": "1b675fe12ab52dcf26d2471c1b1c993a"
+            },
+            {
+                "sample_id": "xo6sZDW2SiHkjVLyZfaE",
+                "file_name": "44e25c33-c773-45fc-b180-bbdac475f183_87.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 444396,
+                "hash": "8c5aec9a5c935aca5fb3684d75959ea9"
+            },
+            {
+                "sample_id": "yGUQo8MiburntfDh6Gzs",
+                "file_name": "7bd27c03-7550-4c79-9c2b-85ff220d72f0_96.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 436808,
+                "hash": "7868b67709e135a80c63fb7261ee7271"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/6tlrf8kJqZ4Gev1Y1fX3/8d3e1937-e4d9-42d4-bfdf-07888ee4f717.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "8yzFzqrBLEkfe6zj9tT4",
+        "name": "Alexpoki",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "h9zNXB5he5rnyDPR4kBc",
+                "file_name": "alexanderpokivoice.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2942900,
+                "hash": "ea883a5ccc0a365444ad22ab30e001f3"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/8yzFzqrBLEkfe6zj9tT4/e165a071-ab53-4dcc-a64a-93a66afb3b1f.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "C4wUwL9T1zRk3jyvXskw",
+        "name": "TwoMinutes",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "seoxrE6kGoI9gimVvC7d",
+                "file_name": "1,000,000,000 Parameter Super Resolution AI!_[cut_240sec].mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 9613060,
+                "hash": "795d90a832392871b784183297aacd2c"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/C4wUwL9T1zRk3jyvXskw/e229f5b1-32e3-4547-8165-abf9e473af0d.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "FiugCfL2Gbnicjj8Un2h",
+        "name": "Wietse",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "kEWy2d9qVbeWngEgj45O",
+                "file_name": "wietsevoice.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2942900,
+                "hash": "0832c9ba95f2b2afb9ca1a92d7945fa0"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/FiugCfL2Gbnicjj8Un2h/c5e5d026-da9c-408e-9aff-1abe31c5093f.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "GCJHI2E5HTX83nMCzUPd",
+        "name": "Gunther",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "LwCgIagGH7HQlrWzzSMj",
+                "file_name": "gunther2.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 4726332,
+                "hash": "030f14fe8fc5a3410c6b420683730939"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/GCJHI2E5HTX83nMCzUPd/9ea8ba77-1fd7-44a2-b323-7bba2598944a.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "HelwDHA0gu2FM2Nts0Xw",
+        "name": "KloontjeZingt",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "Vg8Y4Pqi9HxlndR5e2A2",
+                "file_name": "Leader Kloontje het Reuzenkind (1997) [vocals].mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2252026,
+                "hash": "6b9f15bb175cf53b334ad71348e06c7c"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/HelwDHA0gu2FM2Nts0Xw/ac1b4cd6-13e1-4205-8c35-558498ba8504.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "PIpnKISoU0pJEeZu0rOq",
+        "name": "Theo",
+        "category": "cloned",
+        "description": "Testje met cabaretteketet. ",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "n5ufeUTX0pTxJ4KKnqni",
+                "file_name": "0823(4).MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 4852556,
+                "hash": "18eeb3487a9ad3730783b86ba6cee1ab"
+            },
+            {
+                "sample_id": "p4AV09VEZ7rdSm2MAgjn",
+                "file_name": "Theo Maassen -  Loverboys.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1647732,
+                "hash": "f17fe8026b81d35d4fd73b4bf813b1bb"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/PIpnKISoU0pJEeZu0rOq/9ac64097-7b89-45e5-ad5e-6b65cfaac53b.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "QsGZEmeRmCjfxtbeF2MJ",
+        "name": "Programmer",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "GBNGYkGeBCM8zQISdpH5",
+                "file_name": "elevenshort.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1186218,
+                "hash": "64a6508d399a3c8801053891a8fd70e6"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/QsGZEmeRmCjfxtbeF2MJ/7c0582e4-694b-41ea-ab0e-14a82ed02af6.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "TWkhS69Wp7EUWbN09j0E",
+        "name": "TourJeanLuc",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "SQLNRF5YSZuMqs3c4ueM",
+                "file_name": "JeanLuc.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 179354,
+                "hash": "39c6a891e0ab8ece6d6c86298f65b476"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/TWkhS69Wp7EUWbN09j0E/8727df01-2830-48f9-9fc4-657735416d8a.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "UftcD74Or0buOs8afrHx",
+        "name": "AlexanderLach",
+        "category": "cloned",
+        "description": "",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "OR7CAGR243vPc8rWU8Jb",
+                "file_name": "alach.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1133973,
+                "hash": "56bd29bad7f64160f0ab76f97458425e"
+            },
+            {
+                "sample_id": "Qbqr14QphvA15PJCLMbq",
+                "file_name": "b695d551-e940-4403-b238-ff27e5b33029_50.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1900928,
+                "hash": "134de8f5ace8012a985b4841af8172dd"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/UftcD74Or0buOs8afrHx/db920fb2-2c06-4ee9-b29f-2688ecbe1831.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "W12we7RY2Sk3Cd5GIuNw",
+        "name": "Atje",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "wju4rEKm8A97E5sNhy7b",
+                "file_name": "atten3.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2616892,
+                "hash": "076a52f70e4623e1d9dfdbe83fc9832f"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/W12we7RY2Sk3Cd5GIuNw/a6d633ae-e6e3-4c8f-ad2e-ae53793f520b.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "ZXTyVq3DzljAKBemwgNj",
+        "name": "Bol",
+        "category": "cloned",
+        "description": "",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "10iQeMTJhgBh4XcLR7GP",
+                "file_name": "bol.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2962126,
+                "hash": "115b585000046b47cb6ec32a5dc9ca29"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/ZXTyVq3DzljAKBemwgNj/613bf131-a684-42e7-b4ec-e4ee26ac14d5.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "ZkZC6OWu0rzKfiH2SiTk",
+        "name": "Chriet",
+        "category": "cloned",
+        "description": "Futurist avant la lettre",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "LDnmybODBbokdxI2dtUn",
+                "file_name": "0823(5).MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2776970,
+                "hash": "eab69f35db57133d54d260ea7c7459fe"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/ZkZC6OWu0rzKfiH2SiTk/6859669b-43c7-4d9f-9d67-5ba1f25f7ce6.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "bO9id5YmeU3AVcWKE0gh",
+        "name": "Mol",
+        "category": "cloned",
+        "description": "",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "yF4XqjI3JFisw5Kr0NrR",
+                "file_name": "mol.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2269150,
+                "hash": "d18877e28b4884e25cfcf1f89bc0aca6"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/bO9id5YmeU3AVcWKE0gh/cdda0331-47fc-4ac1-b67c-a511c9d59895.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "c0sJhyHX48T4wsNr9LAf",
+        "name": "Wuyts_Museeuw",
+        "category": "cloned",
+        "description": "Commentator",
+        "labels": {
+            "type": "tourflits"
+        },
+        "samples": [
+            {
+                "sample_id": "dPhj8nDsuYlgkPfMHmoO",
+                "file_name": "wuyts_museeuw.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1264794,
+                "hash": "d789c7505facb24f754617df153b3b34"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/c0sJhyHX48T4wsNr9LAf/d9de98d0-b642-428b-b83a-7f76f4b31890.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "cRDm7TJasAa2jGIXa7IA",
+        "name": "EJ",
+        "category": "cloned",
+        "description": "",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "FwRjuXabvsCBoGFJs1nZ",
+                "file_name": "pfauth.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2241832,
+                "hash": "c8eb6c00e5f4f086b452544df0f684ab"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/cRDm7TJasAa2jGIXa7IA/6896c51f-4f9a-4a78-a3dc-0343ca9e10c9.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "d2qbweRLyzgLCmf4sQQz",
+        "name": "Rop",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "B1UsTqZHB1RtRYGPy00T",
+                "file_name": "ropkort.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1124778,
+                "hash": "c7cf3588c79fcd4a60dbd90debe60c6b"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/d2qbweRLyzgLCmf4sQQz/d2ffa66c-e263-4fb0-a700-f23d471931ee.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "ghFQpmscxzBre3qPrv17",
+        "name": "Wuyts Luid",
+        "category": "cloned",
+        "description": "Commentator",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "2PVUoar8dZvrboD0MaGQ",
+                "file_name": "wuyts_boonen.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 869405,
+                "hash": "63a8b84e0d12d1dbb7453e3a041c1cba"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/ghFQpmscxzBre3qPrv17/62f51414-565a-4a28-9cd2-f8c11b1de17f.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "mLWvdg03QyZ8e9uGp37I",
+        "name": "McLuhan",
+        "category": "cloned",
+        "description": "\"A media theorist giving an interview in a 1960's TV-show\"",
+        "labels": {
+            "type": "academic"
+        },
+        "samples": [
+            {
+                "sample_id": "TDwWqgYgdAoP5SbdTH4g",
+                "file_name": "tv_002.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 553051,
+                "hash": "4a5befe6cb5bce79dd49b43d5b66798d"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/mLWvdg03QyZ8e9uGp37I/24cf43b7-cb47-4a83-a8c2-ffb191eb8e65.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "nABDziw02UwuwbALfNqC",
+        "name": "Frank",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "7YaUJgmVyMK5Jy5LckmT",
+                "file_name": "frank.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2999325,
+                "hash": "be5041138b29641885684c0b79d32e4f"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/nABDziw02UwuwbALfNqC/4cf76874-b16c-402c-9284-24efcec3a7b4.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "nUKTda5gnRXEOVVcGquV",
+        "name": "Erik",
+        "category": "cloned",
+        "description": "Debater",
+        "labels": {
+            "type": "pom"
+        },
+        "samples": [
+            {
+                "sample_id": "V6n5444bdEL4YXS1Rz00",
+                "file_name": "erik.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 3328259,
+                "hash": "a9a75e7b7a5a46ec3a9ee0ada267a807"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/nUKTda5gnRXEOVVcGquV/a6595ca6-c467-47b5-9ee9-3b5591891c21.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "oKpnU36sEDiE9trioRXi",
+        "name": "Tourheli",
+        "category": "cloned",
+        "description": "Commentator",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "QlxDXmRUbGJKJji6iu3d",
+                "file_name": "Tourheli.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 984761,
+                "hash": "a9c50f547c6f0675487085ad29d81d11"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/oKpnU36sEDiE9trioRXi/626f9087-e557-47e5-9dec-e1aa0b7e628b.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "og4Z66Uck64pzs251d8O",
+        "name": "Marleen",
+        "category": "cloned",
+        "description": "debater",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "WiQKcc1spbxlXhYUtCos",
+                "file_name": "Marleen Stikker - VPRO Zomergasten in 5 minuten.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 8490768,
+                "hash": "8b8f8e05af0ecca6c1abe3a3ddbb7bf7"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/og4Z66Uck64pzs251d8O/f55fd8e2-91d8-4ecd-bf59-49e8f47ea6f9.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "pMikxrtSTkFoa3lMbjNO",
+        "name": "TourKoomen",
+        "category": "cloned",
+        "description": "Commentator",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "qeuxjTethFiZigIaf6A7",
+                "file_name": "Tourflits_TheoKoomen.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1301574,
+                "hash": "f619572b7e45cb8790a53d2ec650098a"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/pMikxrtSTkFoa3lMbjNO/83296665-3116-4128-b52b-c7d785c4fe96.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "pwjWtFIo1HcQyUU5UG96",
+        "name": "Yvon",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "C7iFWlWzMPOLWEhKFpW7",
+                "file_name": "BoerZoektStem.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1839488,
+                "hash": "8603608274ebd854662bb71643413732"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/pwjWtFIo1HcQyUU5UG96/ccec0019-9dc9-4f5e-9232-fc5884e9a009.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "qb8TmepHBFTnyZvpLxGL",
+        "name": "Wuyts",
+        "category": "cloned",
+        "description": "Commentator",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "3WPgBsvYRwZ0cRtSyVd1",
+                "file_name": "wuyts_agr.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 476941,
+                "hash": "559cc977a1d3ff6ce3dcbb75ed41d6ba"
+            },
+            {
+                "sample_id": "7GW8rEqVtJ6JoCa1NHVQ",
+                "file_name": "wuyts_boonen.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 869405,
+                "hash": "63a8b84e0d12d1dbb7453e3a041c1cba"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/qb8TmepHBFTnyZvpLxGL/1eee6928-c3c5-4a10-bd96-660c55255ef0.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "sCFhQBVqv3j4rFJ5ABC6",
+        "name": "TourMotor",
+        "category": "cloned",
+        "description": "Motor",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "NdE1TzdMfH0SUytdp2bL",
+                "file_name": "TourMotor.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 2172183,
+                "hash": "8a44e6140375bd42df1c57c44db39be5"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/sCFhQBVqv3j4rFJ5ABC6/ce0756c7-2035-4ff7-9679-9db5903717c3.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "wRGWRThmqx6ujr4r2bmV",
+        "name": "Hansonzeker",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "3O9ZVLwd0fHMWKaYMO1Z",
+                "file_name": "teeuwenonzeker.mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 4833837,
+                "hash": "e2570155c3c9f29000b5c183d0732caa"
+            },
+            {
+                "sample_id": "aRVROrnUzuYXFEnC1RxK",
+                "file_name": "HansImitaties.MP3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 1644301,
+                "hash": "113e68c4c8c48b8a8c7383f92f786c7e"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/wRGWRThmqx6ujr4r2bmV/f6a12472-f68a-4ef2-9018-5257eb59c89e.mp3",
+        "settings": null
+    },
+    {
+        "voice_id": "wvWbdZLk0IRhDp9WDPqM",
+        "name": "Kloontje",
+        "category": "cloned",
+        "description": "",
+        "labels": {},
+        "samples": [
+            {
+                "sample_id": "S6XzS5kkddReFmTqfP9X",
+                "file_name": "De avonturen van Kloontje het Reuzenkind - Sap de Aardwortel (1997) [vocals]_[cut_210sec].mp3",
+                "mime_type": "audio/mpeg",
+                "size_bytes": 8391574,
+                "hash": "30f0988b7e1ee65857074fe776a4447d"
+            }
+        ],
+        "design": null,
+        "preview_url": "https://storage.googleapis.com/eleven-public-prod/LS9Pjm6LYEdkgJYOMKfVuQwHF0D3/voices/wvWbdZLk0IRhDp9WDPqM/f0634ee6-e185-408b-8b46-dfafc2bc1275.mp3",
+        "settings": null
+    }
+]

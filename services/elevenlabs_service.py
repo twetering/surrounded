@@ -19,9 +19,14 @@ class ElevenLabsService:
         user = User.from_api()
         return user
 
+    #List all available voices.
     def list_voices(self):
-        #List all available voices.
         return voices()
+        
+    # Get all available voices with a specific label.
+    def list_voices_with_label(self,label_key, label_value):
+        voices = self.list_voices()
+        return [voice for voice in voices if voice.category == 'cloned' and voice.labels.get(label_key) == label_value]
     
     def generate_speech(self, text, voice_id, settings):
         # Generate speech from text with customized settings.
@@ -164,6 +169,57 @@ class ElevenLabsService:
         if not os.path.exists(directory):
             os.makedirs(directory)
 
+        filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
+        combined_filename = os.path.join(directory, filename)
+        combined_audio.export(combined_filename, format='mp3')
+
+        return combined_filename
+
+    def generate_multiple_voices_bgaudio_overlay(self, sentences, first_voice_id, settings, background_audio_file):
+        voices = self.list_voices()
+        voices = [voice for voice in voices if voice.category == 'cloned']
+        if not voices:
+            raise Exception("No voices available")
+
+        longest_duration = 0
+        audio_segments = []
+
+        for i, sentence in enumerate(sentences):
+            if i == 0:
+                voice_id = first_voice_id
+            else:
+                voice = random.choice(voices)
+                voice_id = voice.voice_id
+            voice = random.choice(voices)
+            try:
+                audio_data = self.generate_speech(sentence, voice_id, settings)
+                filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice.voice_id}.mp3"
+                with open(filename, 'wb') as f:
+                    f.write(audio_data)
+
+                audio_segment = AudioSegment.from_file(filename, format="mp3")
+                os.remove(filename)
+
+                audio_segments.append(audio_segment)
+                longest_duration = max(longest_duration, len(audio_segment))
+            except Exception as e:
+                print(f"Error: {e}")
+                continue
+
+        # Load the background audio file
+        background_audio_file = os.path.join('static', 'audio', 'bgaudio', background_audio_file)
+        background_audio = AudioSegment.from_file(background_audio_file, format="mp3")
+
+        # Use the background audio as the base
+        combined_audio = background_audio[:longest_duration]
+
+        # Overlay the segments on the combined audio
+        for i, segment in enumerate(audio_segments):
+            start_time = int(i * longest_duration / len(audio_segments))  # Calculate the start time for each segment
+            combined_audio = combined_audio.overlay(segment, position=start_time)
+
+        # Save the combined audio to a .mp3 file
+        directory = os.path.join('static', 'audio')
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
         combined_filename = os.path.join(directory, filename)
         combined_audio.export(combined_filename, format='mp3')
