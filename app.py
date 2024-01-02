@@ -12,6 +12,7 @@ import traceback
 import logging
 import random
 import glob
+from flask_cors import CORS, cross_origin # needed for React on other server
 
 # TO DO: Add logging
 # TO DO: Add error handling
@@ -31,10 +32,14 @@ import glob
 # TO DO: Add Assistants
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+CORS(app, supports_credentials=True)
 load_dotenv()
 elevenlabs_service = ElevenLabsService()
 openai_service = OpenAIService()
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
 # Configure headers for ElevenLabs API
 #headers_elevenlabs = {
@@ -337,43 +342,39 @@ def text_to_speech():
         print(f"An error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
-# Route for generate multiple voices 
 @app.route('/generate-multiple-voices', methods=['POST'])
 def generate_multiple_voices():
+
+    DEFAULT_SETTINGS = {
+    'stability': 0.71,
+    'clarity': 0.5,
+    'style': 0.1,
+    'speakerBoost': True
+}
+
     data = request.get_json()
     sentences = data.get('sentences')
-    app.logger.info(f"Received JSON data: {data}")  # Log the JSON payload
     first_voice_id = data.get('voice_id')
-    settings = data.get('settings')
+    settings = data.get('settings', DEFAULT_SETTINGS)
 
     if sentences is None:
         return jsonify({'error': 'No sentences provided'}), 400
 
-    if not settings:
-        return jsonify({'error': 'Missing settings'}), 400  # Return an error if settings are missing
-    # Convert settings values to appropriate types
+    # Omzetting van settings waarden
     settings = {
-        'stability': float(settings.get('stabilitysetting', 0.71)),
-        'clarity': float(settings.get('claritysetting', 0.5)),
-        'style': float(settings.get('stylesetting', 0.1)),
-        'speakerBoost': settings.get('speakerBoost', True) in ['true', True]
+        'stability': float(settings.get('stabilitysetting', DEFAULT_SETTINGS['stability'])),
+        'clarity': float(settings.get('claritysetting', DEFAULT_SETTINGS['clarity'])),
+        'style': float(settings.get('stylesetting', DEFAULT_SETTINGS['style'])),
+        'speakerBoost': settings.get('speakerBoost', DEFAULT_SETTINGS['speakerBoost']) in ['true', True, 'True']
     }
-    
-    if sentences is None:
-        return jsonify({'error': 'No sentences provided'}), 400
-    
+
     try:
-        # Initialize the ElevenLabsService
         service = ElevenLabsService()
-
-        # Generate the multiple voices
-        audio_path = service.generate_multiple_voices_overlay(sentences, first_voice_id, settings)
-
+        audio_path = service.generate_multiple_voices(sentences, first_voice_id, settings)
         return jsonify({'audio_file': audio_path})
-
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
+    
 # This route includes background audio but does not overlay the voices
 @app.route('/generate-multiple-voices-bgaudio', methods=['POST'])
 def generate_multiple_voices_bgaudio():

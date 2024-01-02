@@ -56,59 +56,46 @@ class ElevenLabsService:
             print(f"Error generating speech: {e}")
             raise e
 
-    def generate_multiple_voices(self, sentences):
-        # Get the list of voices
+    def generate_multiple_voices(self, sentences, first_voice_id, settings):
         voices = self.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
-        
-        # Check if voices are available
         if not voices:
             raise Exception("No voices available")
 
+        longest_duration = 0
         audio_segments = []
 
-        for sentence in sentences:
-            # Randomly select a voice
+        for i, sentence in enumerate(sentences):
+            if i == 0:
+                voice_id = first_voice_id
+            else:
+                voice = random.choice(voices)
+                voice_id = voice.voice_id
             voice = random.choice(voices)
-
             try:
-                # Generate speech for the sentence
-                audio_data = self.generate_speech(sentence, voice.voice_id, None)
-
-                # Save the audio data to a .mp3 file
+                audio_data = self.generate_speech(sentence, voice_id, settings)
                 filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice.voice_id}.mp3"
                 with open(filename, 'wb') as f:
                     f.write(audio_data)
 
-                # Load the .mp3 file as an AudioSegment
                 audio_segment = AudioSegment.from_file(filename, format="mp3")
-
-                # Add the audio segment to the list
-                audio_segments.append(audio_segment)
-
-                # Delete the .mp3 file after it's loaded to save space
                 os.remove(filename)
+
+                audio_segments.append(audio_segment)
             except Exception as e:
-                print(f"Error processing sentence '{sentence}' with voice '{voice.voice_id}': {e}")
-                continue  # Skip to the next sentence if an error occurs
+                print(f"Error: {e}")
+                continue
+        
+        combined_audio = audio_segments[0]
+        for segment in audio_segments[1:]:
+            combined_audio += segment
 
-        # Check if any audio segments were successfully processed
-        if not audio_segments:
-            raise Exception("No audio segments were successfully processed")
-
-        # Combine all the audio segments into one
-        combined_audio = sum(audio_segments)
-
-        # Create the path to the 'static/audio' directory
         directory = os.path.join('static', 'audio')
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
-        # Create the filename for the combined audio
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
-
-        # Create the full path to the combined audio file
         combined_filename = os.path.join(directory, filename)
-
-        # Save the combined audio to a .mp3 file
         combined_audio.export(combined_filename, format='mp3')
 
         return combined_filename
