@@ -8,6 +8,7 @@ import random
 from pydub import AudioSegment
 from elevenlabs import VoiceDesign, Gender, Age, Accent, play
 import io
+from flask import url_for
 
 
 set_api_key(os.getenv('ELEVENLABS_API_KEY'))
@@ -56,39 +57,38 @@ class ElevenLabsService:
             print(f"Error generating speech: {e}")
             raise e
 
-    def generate_multiple_voices(self, sentences, first_voice_id, settings):
+    def generate_multiple_voices(self, text_voice_pairs, settings):
         voices = self.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
+        #print(f"Available voices: {voices}")
         if not voices:
             raise Exception("No voices available")
 
-        longest_duration = 0
         audio_segments = []
 
-        for i, sentence in enumerate(sentences):
-            if i == 0:
-                voice_id = first_voice_id
-            else:
-                voice = random.choice(voices)
-                voice_id = voice.voice_id
-            voice = random.choice(voices)
+        for pair in text_voice_pairs:
+            text = pair['text']
+            #voice_id = pair.get('voiceId', random.choice(voices).get('voice_id')) - didn't work
+            voice_id = pair['voiceId']
+            #print(f"Generating speech for text '{text}' with voice '{voice_id}'")
             try:
-                audio_data = self.generate_speech(sentence, voice_id, settings)
-                filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice.voice_id}.mp3"
+                audio_data = self.generate_speech(text, voice_id, settings)
+                filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice_id}.mp3"
                 with open(filename, 'wb') as f:
                     f.write(audio_data)
 
                 audio_segment = AudioSegment.from_file(filename, format="mp3")
                 os.remove(filename)
-
                 audio_segments.append(audio_segment)
+
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error generating speech for text '{text}': {e}")
                 continue
-        
-        combined_audio = audio_segments[0]
-        for segment in audio_segments[1:]:
-            combined_audio += segment
+
+        if not audio_segments:
+            raise Exception("No audio segments were successfully processed")
+
+        combined_audio = sum(audio_segments)
 
         directory = os.path.join('static', 'audio')
         if not os.path.exists(directory):
@@ -98,7 +98,10 @@ class ElevenLabsService:
         combined_filename = os.path.join(directory, filename)
         combined_audio.export(combined_filename, format='mp3')
 
-        return combined_filename
+        # Genereer de toegankelijke URL voor het audiobestand
+        audio_url = url_for('static', filename=f'audio/{filename}', _external=True)
+
+        return audio_url
 
     # Multiple voices overlayed on each other
     def generate_multiple_voices_overlay(self, sentences,first_voice_id, settings):

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, send_file, Response
+from flask import Flask, render_template, request, jsonify, url_for, session, send_file, Response
 import requests
 from dotenv import load_dotenv
 import os
@@ -13,6 +13,7 @@ import logging
 import random
 import glob
 from flask_cors import CORS, cross_origin # needed for React on other server
+
 
 # TO DO: Add logging
 # TO DO: Add error handling
@@ -344,23 +345,18 @@ def text_to_speech():
 
 @app.route('/generate-multiple-voices', methods=['POST'])
 def generate_multiple_voices():
-
     DEFAULT_SETTINGS = {
-    'stability': 0.71,
-    'clarity': 0.5,
-    'style': 0.1,
-    'speakerBoost': True
-}
+        'stability': 0.71,
+        'clarity': 0.5,
+        'style': 0.1,
+        'speakerBoost': True
+    }
 
     data = request.get_json()
-    sentences = data.get('sentences')
-    first_voice_id = data.get('voice_id')
+    text_voice_pairs = data.get('textVoicePairs', [])  # Verwacht een lijst van {text, voiceId}
     settings = data.get('settings', DEFAULT_SETTINGS)
 
-    if sentences is None:
-        return jsonify({'error': 'No sentences provided'}), 400
-
-    # Omzetting van settings waarden
+    # Pas de settings aan
     settings = {
         'stability': float(settings.get('stabilitysetting', DEFAULT_SETTINGS['stability'])),
         'clarity': float(settings.get('claritysetting', DEFAULT_SETTINGS['clarity'])),
@@ -368,12 +364,10 @@ def generate_multiple_voices():
         'speakerBoost': settings.get('speakerBoost', DEFAULT_SETTINGS['speakerBoost']) in ['true', True, 'True']
     }
 
-    try:
-        service = ElevenLabsService()
-        audio_path = service.generate_multiple_voices(sentences, first_voice_id, settings)
-        return jsonify({'audio_file': audio_path})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    service = ElevenLabsService()
+    print("Text voice pairs: ", text_voice_pairs)
+    audio_file = service.generate_multiple_voices(text_voice_pairs, settings)
+    return jsonify({'audio_file': audio_file})
     
 # This route includes background audio but does not overlay the voices
 @app.route('/generate-multiple-voices-bgaudio', methods=['POST'])
