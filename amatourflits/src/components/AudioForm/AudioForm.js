@@ -1,4 +1,5 @@
 import React from 'react';
+import {useState} from 'react';
 import PropTypes from 'prop-types'; // Importeer PropTypes
 import { Button, Container, Paper, Typography, CircularProgress } from '@mui/material';
 import styles from './AudioForm.module.css'; // Importeer de CSS module
@@ -13,32 +14,38 @@ function AudioForm() {
     const { voices } = useVoices();
     const { generateVoices, audioUrl, loading, error } = useGenerateMultipleVoices(); 
     const { sentences, addSentence, removeSentence, updateSentence } = useSentenceForm(voices);
+    
+    const [audiosettings, setAudioSettings] = useState({
+        intro: '',
+        outro: '',
+        bgaudio: ''
+    });
+
+    const handleSettingChange = (setting, value) => {
+        setAudioSettings(prevSettings => ({
+            ...prevSettings,
+            [setting]: value
+        }));
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        generateVoices(sentences);
+        generateVoices(sentences, audiosettings);
     };
 
     return (
         <Container className={styles.container}>
             <Paper className={styles.paper}>
-                <Typography 
-                    variant="h4" 
-                    className={styles.typographyHeader}
-                >
+                <Typography variant="h4" className={styles.typographyHeader}>
                     Meerdere Stemmen Genereren
                 </Typography>
 
-                <AudioSettingsForm />
-
-                <Typography 
-                    variant="h5" 
-                    className={styles.typographyHeader}
-                >
-                    Zinnen en Stemmen
-                </Typography>
-
                 <form onSubmit={handleSubmit}>
+                    <AudioSettingsForm 
+                        audiosettings={audiosettings} 
+                        setAudioSettings={setAudioSettings} 
+                    />
+
                     {sentences.map((sentence, index) => (
                         <SentenceForm
                             key={index}

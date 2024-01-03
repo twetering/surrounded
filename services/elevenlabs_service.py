@@ -57,7 +57,7 @@ class ElevenLabsService:
             print(f"Error generating speech: {e}")
             raise e
     
-    def generate_multiple_voices_bgvoice(self, text_voice_bgvoice_pairs, settings):
+    def generate_multiple_voices_bgvoice(self, text_voice_bgvoice_pairs, audiosettings, settings):
         voices = self.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
         #print(f"Available voices: {voices}")
@@ -65,6 +65,12 @@ class ElevenLabsService:
             raise Exception("No voices available")
 
         audio_segments = []
+
+        intro = audiosettings.get('intro')
+        outro = audiosettings.get('outro')
+        bgaudio = audiosettings.get('bgaudio')
+
+        print(f"Intro: {intro}", f"Outro: {outro}", f"Background audio: {bgaudio}")
         
         for pair in text_voice_bgvoice_pairs:
             

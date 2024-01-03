@@ -6,7 +6,7 @@ const useGenerateMultipleVoices = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const generateVoices = async (textVoicePairs) => {
+    const generateVoices = async (textVoicePairs, audiosettings) => {
         setLoading(true);
         setError(null);
         try {
@@ -15,7 +15,7 @@ const useGenerateMultipleVoices = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ textVoicePairs }),
+                body: JSON.stringify({ textVoicePairs, audiosettings }),
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

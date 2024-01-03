@@ -346,28 +346,31 @@ def text_to_speech():
 @app.route('/generate-multiple-voices', methods=['POST'])
 def generate_multiple_voices():
     DEFAULT_SETTINGS = {
-        'stability': 0.71,
-        'clarity': 0.5,
-        'style': 0.1,
+        'stability': 0.3,
+        'clarity': 0.98,
+        'style': 0.5,
         'speakerBoost': True
     }
 
     data = request.get_json()
+    print("DATA: ", data)
     text_voice_bgvoice_pairs = data.get('textVoicePairs', [])  # Expects a list of {text, voiceId, bgVoice}
     print("TEXT VOICE BGVOICE PAIRS: ", text_voice_bgvoice_pairs)
-    settings = data.get('settings', DEFAULT_SETTINGS)
-
+    voicesettings = data.get('voicesettings', DEFAULT_SETTINGS)
+    audiosettings = data.get('audiosettings', {})
+    print("AUDIO SETTINGS: ", audiosettings)
+    
     # Pas de settings aan
-    settings = {
-        'stability': float(settings.get('stabilitysetting', DEFAULT_SETTINGS['stability'])),
-        'clarity': float(settings.get('claritysetting', DEFAULT_SETTINGS['clarity'])),
-        'style': float(settings.get('stylesetting', DEFAULT_SETTINGS['style'])),
-        'speakerBoost': settings.get('speakerBoost', DEFAULT_SETTINGS['speakerBoost']) in ['true', True, 'True']
+    voicesettings = {
+        'stability': float(voicesettings.get('stabilitysetting', DEFAULT_SETTINGS['stability'])),
+        'clarity': float(voicesettings.get('claritysetting', DEFAULT_SETTINGS['clarity'])),
+        'style': float(voicesettings.get('stylesetting', DEFAULT_SETTINGS['style'])),
+        'speakerBoost': voicesettings.get('speakerBoost', DEFAULT_SETTINGS['speakerBoost']) in ['true', True, 'True']
     }
 
     service = ElevenLabsService()
     # old version without bgaudio: audio_file = service.generate_multiple_voices(text_voice_pairs, settings)
-    audio_file = service.generate_multiple_voices_bgvoice(text_voice_bgvoice_pairs, settings)
+    audio_file = service.generate_multiple_voices_bgvoice(text_voice_bgvoice_pairs, audiosettings, voicesettings)
     return jsonify({'audio_file': audio_file})
     
 # This route includes background audio but does not overlay the voices
