@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container, Paper, Typography, CircularProgress, Button } from '@mui/material';
+import PropTypes from 'prop-types'; // Importeer PropTypes
+import { TextField, Button, Container, Paper, Typography, Select, CircularProgress, MenuItem, FormControl, InputLabel } from '@mui/material';
+import styles from './AudioForm.module.css'; // Importeer de CSS module
 import useVoices from '../../hooks/useVoices';
 import useGenerateMultipleVoices from '../../hooks/useGenerateMultipleVoices';
 import SentenceForm from '../SentenceForm/SentenceForm';
@@ -17,15 +19,11 @@ function AudioForm() {
     };
 
     return (
-        <Container component="main" maxWidth="lg">
-            <Paper 
-                style={{ padding: '20px', marginTop: '20px', backgroundColor: '#f5f5f5' }} 
-                elevation={6}
-            >
+        <Container className={styles.container}>
+            <Paper className={styles.paper}>
                 <Typography 
                     variant="h4" 
-                    className="roboto-slab" 
-                    style={{ color: '#3f51b5', marginBottom: '20px' }}
+                    className={styles.typographyHeader}
                 >
                     Meerdere Stemmen Genereren
                 </Typography>
@@ -40,18 +38,12 @@ function AudioForm() {
                             onRemoveSentence={removeSentence}
                         />
                     ))}
-                    <div style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        width: '100%', 
-                        marginBottom: '20px' 
-                    }}>
+                    <div className={styles.buttonGroup}>
                         <Button 
                             variant="contained" 
                             color="secondary" 
                             onClick={addSentence} 
-                            style={{ marginRight: '10px' }}
+                            className={styles.addRemoveButton}
                         >
                             Voeg Zin Toe
                         </Button>
@@ -60,12 +52,13 @@ function AudioForm() {
                             variant="contained"
                             color="primary"
                             disabled={loading}
+                            className={styles.submitButton}
                         >
                             {loading ? (
                                 <>
                                     <CircularProgress 
                                         size={24} 
-                                        style={{ marginRight: '10px' }} 
+                                        className={styles.addRemoveButton} 
                                     />
                                     Genereren...
                                 </>
@@ -73,27 +66,17 @@ function AudioForm() {
                         </Button>
                     </div>
                     {audioUrl && (
-                        <div style={{ 
-                            marginTop: '20px', 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            alignItems: 'center', 
-                            justifyContent: 'center' 
-                            }}
-                        >
+                        <div className={styles.audioSection}>
                             <Typography 
                                 variant="h5" 
-                                className="roboto-slab" 
-                                style={{ color: '#3f51b5', marginBottom: '20px' }}
+                                className={styles.typographyHeader}
                             >
                                 Gegenereerde audio
                             </Typography>
                             <ReactPlayer
                                 url={audioUrl}
                                 controls={true}
-                                width='50%'
-                                height='50px'
-                                style={{ borderRadius: '4px' }}
+                                className={styles.audioPlayer}
                             />
                         </div>
                     )}
@@ -103,5 +86,16 @@ function AudioForm() {
         </Container>
     );
 }
+
+AudioForm.propTypes = {
+    sentences: PropTypes.arrayOf(PropTypes.shape({
+        text: PropTypes.string,
+        voiceId: PropTypes.string,
+    })),
+    voices: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string,
+        voice_id: PropTypes.string,
+    })),
+};
 
 export default AudioForm;
