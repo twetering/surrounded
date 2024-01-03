@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Container, Paper, Typography, Select, CircularProgress, MenuItem, FormControl, InputLabel } from '@mui/material';
 import useVoices from '../../hooks/useVoices';
 import useGenerateMultipleVoices from '../../hooks/useGenerateMultipleVoices';
@@ -7,8 +7,15 @@ import ReactPlayer from 'react-player';
 
 function AudioForm() {
     const { voices } = useVoices();
-    const { generateVoices, audioUrl, loading, error } = useGenerateMultipleVoices();  // Correct gebruik van de hook
-    const [sentences, setSentences] = useState([{ text: '', voiceId: '' }]);
+    const { generateVoices, audioUrl, loading, error } = useGenerateMultipleVoices(); 
+    const [sentences, setSentences] = useState([]);
+
+    useEffect(() => {
+        if (voices.length > 0 && sentences.length === 0) {
+            const randomVoiceId = voices[Math.floor(Math.random() * voices.length)].voice_id;
+            setSentences([{ text: '', voiceId: randomVoiceId }]);
+        }
+    }, [voices, sentences.length]);
 
     const handleSentenceChange = (index, key, value) => {
         const newSentences = [...sentences];
