@@ -357,8 +357,9 @@ def generate_multiple_voices():
     text_voice_bgvoice_pairs = data.get('textVoicePairs', [])  # Expects a list of {text, voiceId, bgVoice}
     print("TEXT VOICE BGVOICE PAIRS: ", text_voice_bgvoice_pairs)
     voicesettings = data.get('voicesettings', DEFAULT_SETTINGS)
-    audiosettings = data.get('audiosettings', {})
-    print("AUDIO SETTINGS: ", audiosettings)
+    intro = data.get('intro', {})
+    outro = data.get('outro', {})
+    bgaudio = data.get('bgaudio', {})
     
     # Pas de settings aan
     voicesettings = {
@@ -370,7 +371,7 @@ def generate_multiple_voices():
 
     service = ElevenLabsService()
     # old version without bgaudio: audio_file = service.generate_multiple_voices(text_voice_pairs, settings)
-    audio_file = service.generate_multiple_voices_bgvoice(text_voice_bgvoice_pairs, audiosettings, voicesettings)
+    audio_file = service.generate_multiple_voices_bgvoice(text_voice_bgvoice_pairs, intro,outro,bgaudio, voicesettings)
     return jsonify({'audio_file': audio_file})
     
 # This route includes background audio but does not overlay the voices

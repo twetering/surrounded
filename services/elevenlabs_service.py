@@ -57,28 +57,18 @@ class ElevenLabsService:
             print(f"Error generating speech: {e}")
             raise e
     
-    def generate_multiple_voices_bgvoice(self, text_voice_bgvoice_pairs, audiosettings, settings):
+    def generate_multiple_voices_bgvoice(self, text_voice_bgvoice_pairs, intro, outro, bgaudio, settings):
         voices = self.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
-        #print(f"Available voices: {voices}")
         if not voices:
             raise Exception("No voices available")
 
         audio_segments = []
 
-        intro = audiosettings.get('intro')
-        outro = audiosettings.get('outro')
-        bgaudio = audiosettings.get('bgaudio')
-
-        print(f"Intro: {intro}", f"Outro: {outro}", f"Background audio: {bgaudio}")
-        
         for pair in text_voice_bgvoice_pairs:
-            
             text = pair['text']
             voice_id = pair['voiceId']
             bgvoice_filename = pair.get('bgVoiceId')
-            print(f"Generating speech for text '{text}' with voice '{voice_id}' with background voice '{bgvoice_filename}'")
-
             try:
                 audio_data = self.generate_speech(text, voice_id, settings)
                 speech_filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_{voice_id}.mp3"
@@ -104,19 +94,36 @@ class ElevenLabsService:
             raise Exception("No audio segments were successfully processed")
 
         combined_audio = sum(audio_segments)
+        print(f"Combined audio length: {combined_audio.duration_seconds}")
+        if bgaudio:
+            bgaudio = os.path.join('static', 'audio', bgaudio)
+            print(f"Processing Background audio: {bgaudio}")
+            bg_segment = AudioSegment.from_file(bgaudio, format="mp3")
+            bg_segment = bg_segment * (len(combined_audio) // len(bg_segment) + 1)  # Herhaal het achtergrondgeluid
+            combined_audio = combined_audio.overlay(bg_segment[:len(combined_audio)])
 
+        if intro:
+            intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+            print(f"Processing Intro audio: {intro}")
+            combined_audio = intro_audio + combined_audio
+
+        if outro:
+            outro_audio = AudioSegment.from_file(os.path.join('static', 'audio', outro), format="mp3")
+            print(f"Processing Outro audio: {outro}")
+            combined_audio += outro_audio
+
+        print(f"Combined audio length: {combined_audio.duration_seconds}")
         directory = os.path.join('static', 'audio')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
-        filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
+        filename = f"{datetime.datetime.now().strftime('%d%m%Y')}_intro_outro_combined.mp3"
+        print(f"Filename: {filename}")
         combined_filename = os.path.join(directory, filename)
+        print(f"Full path audio filename: {combined_filename}")
         combined_audio.export(combined_filename, format='mp3')
-
-        # Genereer de toegankelijke URL voor het audiobestand
-        audio_url = url_for('static', filename=f'audio/{filename}', _external=True)
-
-        return audio_url
+        audio_file_url = url_for('static', filename='audio/' + filename, _external=True)
+        return audio_file_url
 
 
     def generate_multiple_voices(self, text_voice_pairs, settings):

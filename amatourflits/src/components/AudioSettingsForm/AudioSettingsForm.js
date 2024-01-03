@@ -5,17 +5,17 @@ import useAudioFiles from '../../hooks/useAudioFiles';
 
 function AudioSettingsForm({ audiosettings, setAudioSettings }) {
     
+    const { audioFiles: introFiles } = useAudioFiles('amatourflits/intros');
+    const { audioFiles: outroFiles } = useAudioFiles('amatourflits/outros');
+    const { audioFiles: bgaudioFiles } = useAudioFiles('amatourflits/bgaudio');
 
-  const { audioFiles: introFiles } = useAudioFiles('amatourflits/intros');
-  const { audioFiles: outroFiles } = useAudioFiles('amatourflits/outros');
-  const { audioFiles: bgaudioFiles } = useAudioFiles('amatourflits/bgaudio');
-
-  const handleSettingChange = (setting, value) => {
-    setAudioSettings(prevSettings => ({
-        ...prevSettings,
-        [setting]: value
-    }));
-};
+    const handleSettingChange = (setting, value) => {
+        setAudioSettings(prevSettings => ({
+            ...prevSettings,
+            [setting]: value
+        }));
+    };
+    
 
   return (
     <div className={styles.sentenceForm}>
@@ -32,7 +32,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
               labelId="intro-label"
               value={audiosettings.intro}
               onChange={(e) => handleSettingChange('intro', e.target.value)}
-            >
+              >
               {introFiles.map((file, index) => (
                 <MenuItem key={index} value={file.filename}>{file.filename}</MenuItem>
               ))}
@@ -48,7 +48,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
               labelId="outro-label"
               value={audiosettings.outro}
               onChange={(e) => handleSettingChange('outro', e.target.value)}
-            >
+              >
               {outroFiles.map((file, index) => (
                 <MenuItem key={index} value={file.filename}>{file.filename}</MenuItem>
               ))}
@@ -64,7 +64,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
               labelId="bgaudio-label"
               value={audiosettings.bgaudio}
               onChange={(e) => handleSettingChange('bgaudio', e.target.value)}
-            >
+              >
               {bgaudioFiles.map((file, index) => (
                 <MenuItem key={index} value={file.filename}>{file.filename}</MenuItem>
               ))}
