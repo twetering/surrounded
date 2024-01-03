@@ -8,7 +8,7 @@ const useVoices = () => {
     useEffect(() => {
         const fetchVoices = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5000/get_voices');
+                const response = await fetch('http://127.0.0.1:5000//get_voices_with_label/type/tourflits');
                 if (!response.ok) {
                     throw new Error(`HTTP status ${response.status}`);
                 }

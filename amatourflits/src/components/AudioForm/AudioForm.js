@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types'; // Importeer PropTypes
-import { TextField, Button, Container, Paper, Typography, Select, CircularProgress, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Button, Container, Paper, Typography, CircularProgress } from '@mui/material';
 import styles from './AudioForm.module.css'; // Importeer de CSS module
 import useVoices from '../../hooks/useVoices';
 import useGenerateMultipleVoices from '../../hooks/useGenerateMultipleVoices';
 import SentenceForm from '../SentenceForm/SentenceForm';
 import useSentenceForm from '../../hooks/useSentenceForm';
+import AudioSettingsForm from '../AudioSettingsForm/AudioSettingsForm';
 import ReactPlayer from 'react-player';
 
 function AudioForm() {
@@ -27,6 +28,16 @@ function AudioForm() {
                 >
                     Meerdere Stemmen Genereren
                 </Typography>
+
+                <AudioSettingsForm />
+
+                <Typography 
+                    variant="h5" 
+                    className={styles.typographyHeader}
+                >
+                    Zinnen en Stemmen
+                </Typography>
+
                 <form onSubmit={handleSubmit}>
                     {sentences.map((sentence, index) => (
                         <SentenceForm

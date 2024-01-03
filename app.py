@@ -353,7 +353,8 @@ def generate_multiple_voices():
     }
 
     data = request.get_json()
-    text_voice_pairs = data.get('textVoicePairs', [])  # Verwacht een lijst van {text, voiceId}
+    text_voice_bgvoice_pairs = data.get('textVoicePairs', [])  # Expects a list of {text, voiceId, bgVoice}
+    print("TEXT VOICE BGVOICE PAIRS: ", text_voice_bgvoice_pairs)
     settings = data.get('settings', DEFAULT_SETTINGS)
 
     # Pas de settings aan
@@ -365,8 +366,8 @@ def generate_multiple_voices():
     }
 
     service = ElevenLabsService()
-    print("Text voice pairs: ", text_voice_pairs)
-    audio_file = service.generate_multiple_voices(text_voice_pairs, settings)
+    # old version without bgaudio: audio_file = service.generate_multiple_voices(text_voice_pairs, settings)
+    audio_file = service.generate_multiple_voices_bgvoice(text_voice_bgvoice_pairs, settings)
     return jsonify({'audio_file': audio_file})
     
 # This route includes background audio but does not overlay the voices
@@ -511,6 +512,23 @@ def get_bgaudio():
         bgaudio_files = [{'filename': os.path.basename(bgaudio_file)} for bgaudio_file in bgaudio_files]
 
         return jsonify(bgaudio_files)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get all background audio files
+@app.route('/api/audio')
+def api_get_bgaudio():
+    #print("API GET BGAUDIO", request.args.get('folder', default='bgaudio', type=str))
+    try:
+        folder_name = request.args.get('folder', default='bgaudio', type=str)
+        audio_files_path = os.path.join('static', 'audio', folder_name, '*.mp3')
+        audio_files = glob.glob(audio_files_path)
+        #print("AUDIO FILES: ", audio_files)
+
+        # Extract the filename from the full path
+        audio_files = [{'filename': os.path.basename(file)} for file in audio_files]
+
+        return jsonify({'files': audio_files})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
