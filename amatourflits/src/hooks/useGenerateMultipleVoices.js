@@ -19,7 +19,7 @@ const useGenerateMultipleVoices = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ textVoicePairs, intro: introPath, outro: outroPath, background: bgAudioPath }),
+                body: JSON.stringify({ textVoicePairs, intro: introPath, outro: outroPath, bgaudio: bgAudioPath }),
             });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

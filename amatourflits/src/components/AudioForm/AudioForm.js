@@ -1,8 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
-import PropTypes from 'prop-types'; // Importeer PropTypes
+import PropTypes from 'prop-types'; // Import PropTypes
 import { Button, Container, Paper, Typography, CircularProgress } from '@mui/material';
-import styles from './AudioForm.module.css'; // Importeer de CSS module
+import styles from './AudioForm.module.css'; // import styles
 import useVoices from '../../hooks/useVoices';
 import useGenerateMultipleVoices from '../../hooks/useGenerateMultipleVoices';
 import SentenceForm from '../SentenceForm/SentenceForm';

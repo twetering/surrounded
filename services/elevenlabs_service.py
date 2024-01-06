@@ -64,7 +64,10 @@ class ElevenLabsService:
             raise Exception("No voices available")
 
         audio_segments = []
-
+        
+        if intro:
+            intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+        pair_counter = 0
         for pair in text_voice_bgvoice_pairs:
             text = pair['text']
             voice_id = pair['voiceId']
@@ -85,6 +88,14 @@ class ElevenLabsService:
                     speech_segment = speech_segment.overlay(bg_segment[:len(speech_segment)])  # Overlay met spraak
 
                 audio_segments.append(speech_segment)
+                
+                # Add intro audio before every sentence if provided - testing
+                if intro_audio:
+                    if pair_counter % 2 == 1 and pair_counter != len(text_voice_bgvoice_pairs) - 1:
+                        audio_segments.append(intro_audio)
+
+                    # Increment the pair counter
+                    pair_counter += 1
 
             except Exception as e:
                 print(f"Error generating speech for text '{text}': {e}")

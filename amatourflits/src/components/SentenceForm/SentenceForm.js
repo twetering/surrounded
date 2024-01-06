@@ -1,6 +1,6 @@
 // src/components/SentenceForm/SentenceForm.js
 import React from 'react';
-import { TextField, FormControl, Typography, InputLabel, Select, MenuItem, Button } from '@mui/material';
+import { TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styles from '../AudioForm/AudioForm.module.css';
 import useAudioFiles from '../../hooks/useAudioFiles';
@@ -23,13 +23,13 @@ const SentenceForm = ({ index, sentence, voices, onSentenceChange, onRemoveSente
                 <TextField
                     label={`Zin ${index + 1}`}
                     multiline
-                    rows={2}
+                    rows={4}
                     style={{ marginRight: '10px', flexGrow: 1 }}
                     variant="outlined"
                     value={sentence.text}
                     onChange={(e) => onSentenceChange(index, 'text', e.target.value)}
                 />
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'block', alignItems: 'center' }}>
                     <FormControl style={{ width: '200px', marginRight: '10px' }}>
                         <InputLabel id={`voice-select-label-${index}`}>Stem</InputLabel>
                         <Select
@@ -53,7 +53,7 @@ const SentenceForm = ({ index, sentence, voices, onSentenceChange, onRemoveSente
                         <Select
                             labelId={`bgvoice-select-label-${index}`}
                             id={`bgvoice-select-${index}`}
-                            value={bgVoiceId ? bgVoiceId.replace(bgVoiceFolder, '') : ''} // Alleen de bestandsnaam
+                            value={bgVoiceId ? bgVoiceId.replace(bgVoiceFolder, '') : ''} // Only show filename
                             label="Achtergrond"
                             onChange={(e) => handleBgVoiceChange(index, e.target.value)}
                         >
