@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Amatourflits Audioformulier</h1>
+        <h1>Amatourflits</h1>
       </header>
       <AudioForm />
     </div>

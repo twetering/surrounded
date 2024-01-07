@@ -2,7 +2,7 @@
 import React from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import styles from '../AudioForm/AudioForm.module.css';
+import styles from './SentenceForm.css';
 import useAudioFiles from '../../hooks/useAudioFiles';
 
 const SentenceForm = ({ index, sentence, voices, onSentenceChange, onRemoveSentence }) => {
@@ -18,7 +18,7 @@ const SentenceForm = ({ index, sentence, voices, onSentenceChange, onRemoveSente
     };
     
     return (
-        <div className={styles.audioForm}>
+        <div className={styles.SentenceForm}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
                 <TextField
                     label={`Zin ${index + 1}`}

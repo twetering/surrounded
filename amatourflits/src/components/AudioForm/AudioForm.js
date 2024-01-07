@@ -1,8 +1,8 @@
 import React from 'react';
 import {useState} from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
-import { Button, Container, Paper, Typography, CircularProgress } from '@mui/material';
-import styles from './AudioForm.module.css'; // import styles
+import { TextField, Button, Container, Paper, Typography, CircularProgress } from '@mui/material';
+import styles from './AudioForm.css'; // import styles
 import useVoices from '../../hooks/useVoices';
 import useGenerateMultipleVoices from '../../hooks/useGenerateMultipleVoices';
 import SentenceForm from '../SentenceForm/SentenceForm';
@@ -41,9 +41,20 @@ function AudioForm() {
                 </Typography>
 
                 <form onSubmit={handleSubmit}>
+                    
+                    <TextField
+                        id="test-field"
+                        label="Test Field"
+                        multiline
+                        rows={12}
+                        variant="outlined"
+                        style={{ marginTop: '20px', marginBottom: '20px', width: '100%' }}
+                    />
+
                     <AudioSettingsForm 
                         audiosettings={audiosettings} 
                         setAudioSettings={setAudioSettings} 
+                        handleSettingChange={handleSettingChange}
                     />
 
                     {sentences.map((sentence, index) => (

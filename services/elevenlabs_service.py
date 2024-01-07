@@ -59,6 +59,87 @@ class ElevenLabsService:
     
     def generate_multiple_voices_bgvoice(self, text_voice_bgvoice_pairs, intro, outro, bgaudio, settings):
         voices = self.list_voices()
+        if not voices:
+            raise Exception("No voices available")
+
+        audio_segments = self.generate_voice_segments(text_voice_bgvoice_pairs, settings)
+        combined_audio = self.combine_audio_segments(audio_segments)
+
+        if bgaudio:
+            combined_audio = self.add_background_audio(combined_audio, bgaudio)
+
+        if intro:
+            combined_audio = self.add_intro_audio(combined_audio, intro)
+
+        if outro:
+            combined_audio = self.add_outro_audio(combined_audio, outro)
+
+        return self.save_and_return_url(combined_audio)
+
+    def generate_voice_segments(self, text_voice_bgvoice_pairs, settings):
+        audio_segments = []
+        for pair in text_voice_bgvoice_pairs:
+            audio_segment = self.process_pair(pair, settings)
+            if audio_segment:
+                audio_segments.append(audio_segment)
+        return audio_segments
+
+    def process_pair(self, pair, settings):
+        try:
+            audio_data = self.generate_speech(pair['text'], pair['voiceId'], settings)
+            speech_segment = self.create_audio_segment(audio_data)
+
+            if pair.get('bgVoiceId'):
+                speech_segment = self.add_background_to_segment(speech_segment, pair['bgVoiceId'])
+
+            return speech_segment
+        except Exception as e:
+            print(f"Error generating speech for text '{pair['text']}': {e}")
+            return None
+
+    def create_audio_segment(self, audio_data):
+        speech_filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.mp3"
+        with open(speech_filename, 'wb') as f:
+            f.write(audio_data)
+        speech_segment = AudioSegment.from_file(speech_filename, format="mp3")
+        os.remove(speech_filename)
+        return speech_segment
+
+    def add_background_to_segment(self, segment, bgvoice_filename):
+        bgvoice_path = os.path.join('static', 'audio', bgvoice_filename)
+        bg_segment = AudioSegment.from_file(bgvoice_path, format="mp3")
+        bg_segment = bg_segment * (len(segment) // len(bg_segment) + 1)
+        return segment.overlay(bg_segment[:len(segment)])
+
+    def add_background_audio(self, audio, bgaudio):
+        bgaudio_path = os.path.join('static', 'audio', bgaudio)
+        bg_segment = AudioSegment.from_file(bgaudio_path, format="mp3")
+        bg_segment = bg_segment * (len(audio) // len(bg_segment) + 1)
+        return audio.overlay(bg_segment[:len(audio)])
+
+    def add_intro_audio(self, audio, intro):
+        intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+        return intro_audio + audio
+
+    def add_outro_audio(self, audio, outro):
+        outro_audio = AudioSegment.from_file(os.path.join('static', 'audio', outro), format="mp3")
+        return audio + outro_audio
+
+    def combine_audio_segments(self, segments):
+        return sum(segments)
+
+    def save_and_return_url(self, audio):
+        directory = os.path.join('static', 'audio')
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
+        combined_filename = os.path.join(directory, filename)
+        audio.export(combined_filename, format='mp3')
+        return url_for('static', filename='audio/' + filename, _external=True)
+
+    def generate_multiple_voices_bgvoice_backup(self, text_voice_bgvoice_pairs, intro, outro, bgaudio, settings):
+        voices = self.list_voices()
         voices = [voice for voice in voices if voice.category == 'cloned']
         if not voices:
             raise Exception("No voices available")

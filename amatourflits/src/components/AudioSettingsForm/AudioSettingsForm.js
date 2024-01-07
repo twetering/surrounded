@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, Typography, Select, MenuItem, Grid } from '@mui/material';
-import styles from '../AudioForm/AudioForm.module.css';
+import styles from './AudioSettingsForm.css';
 import useAudioFiles from '../../hooks/useAudioFiles';
 
 function AudioSettingsForm({ audiosettings, setAudioSettings }) {
@@ -18,7 +18,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
     
 
   return (
-    <div className={styles.sentenceForm}>
+    <div className={styles.AudioSettingsForm}>
       <Typography variant="h5" className={styles.typographyHeader}>
         Audio Settings
       </Typography>

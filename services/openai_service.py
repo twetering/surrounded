@@ -7,6 +7,14 @@ class OpenAIService:
         openai_api_key = os.getenv('OPENAI_API_KEY')
         self.client = OpenAI(api_key=openai_api_key)    
 
+    def transcribe_audio(self, audio_path):
+        audio_file= open(audio_path, "rb")
+        transcript = client.audio.translations.create(
+            model="whisper-1", 
+            file=audio_file
+        )
+        return transcript
+
     def list_assistants(self, limit, order, after, before):
         return self.client.beta.assistants.list(order=order, limit=limit, after=after, before=before)
 
