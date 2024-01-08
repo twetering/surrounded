@@ -153,17 +153,18 @@ function AudioForm() {
                     </div>
                     {audioUrl && (
                         <div className="audioSection">
-                            <Typography 
-                                variant="h5" 
-                                className="typographyHeader"
-                            >
-                                Gegenereerde audio
-                            </Typography>
-                            <ReactPlayer
-                                url={audioUrl}
-                                controls={true}
-                                className="audioPlayer"
-                            />
+                            <box className="typographyHeader">
+                                <Typography 
+                                    variant="h5" 
+                                >
+                                    Luister of download je Amatourflits
+                                </Typography>
+                            </box>
+                                <ReactPlayer
+                                    url={audioUrl}
+                                    controls={true}
+                                    className="audioPlayer"
+                                />
                         </div>
                     )}
                     {error && <div>Error: {error}</div>}
