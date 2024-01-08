@@ -187,24 +187,24 @@ class ElevenLabsService:
         combined_audio = sum(audio_segments)
         print(f"Combined audio length: {combined_audio.duration_seconds}")
         if bgaudio:
-            bgaudio = os.path.join('media', bgaudio)
+            bgaudio = os.path.join('static','media', bgaudio)
             print(f"Processing Background audio: {bgaudio}")
             bg_segment = AudioSegment.from_file(bgaudio, format="mp3")
             bg_segment = bg_segment * (len(combined_audio) // len(bg_segment) + 1)  # Herhaal het achtergrondgeluid
             combined_audio = combined_audio.overlay(bg_segment[:len(combined_audio)])
 
         if intro:
-            intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
+            intro_audio = AudioSegment.from_file(os.path.join('static','media', intro), format="mp3")
             print(f"Processing Intro audio: {intro}")
             combined_audio = intro_audio + combined_audio
 
         if outro:
-            outro_audio = AudioSegment.from_file(os.path.join('media', outro), format="mp3")
+            outro_audio = AudioSegment.from_file(os.path.join('static','media', outro), format="mp3")
             print(f"Processing Outro audio: {outro}")
             combined_audio += outro_audio
 
         print(f"Combined audio length: {combined_audio.duration_seconds}")
-        directory = os.path.join('media', 'output')
+        directory = os.path.join('static', 'media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -213,7 +213,7 @@ class ElevenLabsService:
         combined_filename = os.path.join(directory, filename)
         print(f"Full path audio filename: {combined_filename}")
         combined_audio.export(combined_filename, format='mp3')
-        audio_file_url = url_for('media', filename='output/' + filename, _external=True)
+        audio_file_url = url_for('static', filename='media/output/' + filename, _external=True)
         return audio_file_url
 
 
@@ -250,7 +250,7 @@ class ElevenLabsService:
 
         combined_audio = sum(audio_segments)
 
-        directory = os.path.join('media', 'output')
+        directory = os.path.join('static','media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -259,7 +259,7 @@ class ElevenLabsService:
         combined_audio.export(combined_filename, format='mp3')
 
         # Genereer de toegankelijke URL voor het audiobestand
-        audio_url = url_for('media', filename=f'output/{filename}', _external=True)
+        audio_url = url_for('static', filename=f'media/output/{filename}', _external=True)
 
         return audio_url
 
@@ -315,7 +315,7 @@ class ElevenLabsService:
         if combined_audio.duration_seconds == 0:
             raise Exception("No audio segments were successfully processed")
 
-        directory = os.path.join('media', 'output')
+        directory = os.path.join('static','media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -357,7 +357,7 @@ class ElevenLabsService:
                 continue
 
         # Load the background audio file
-        background_audio_file = os.path.join('media', 'bgaudio', background_audio_file)
+        background_audio_file = os.path.join('static','media', 'bgaudio', background_audio_file)
         background_audio = AudioSegment.from_file(background_audio_file, format="mp3")
 
         # Use the background audio as the base
@@ -369,7 +369,7 @@ class ElevenLabsService:
             combined_audio = combined_audio.overlay(segment, position=start_time)
 
         # Save the combined audio to a .mp3 file
-        directory = os.path.join('media', 'output')
+        directory = os.path.join('static','media', 'output')
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
         combined_filename = os.path.join(directory, filename)
         combined_audio.export(combined_filename, format='mp3')

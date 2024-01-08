@@ -87,7 +87,7 @@ def text_to_speech():
         audio = elevenlabs_service.generate_speech(text, voice_id, settings)
 
         filename = hashlib.sha256((voice_id + text).encode()).hexdigest() + '.mp3'
-        audio_path = os.path.join('media', 'output', filename)
+        audio_path = os.path.join('static','media', 'output', filename)
         with open(audio_path, 'wb') as f:
             f.write(audio)
 
@@ -264,8 +264,8 @@ def amatourflits():
 def get_bgaudio():
 
     try:
-        # Get the list of all mp3 files in /media/bgaudio
-        bgaudio_files = glob.glob('media/bgaudio/*.mp3')
+        # Get the list of all mp3 files in static/media/bgaudio
+        bgaudio_files = glob.glob('static/media/bgaudio/*.mp3')
 
         # Extract the filename from the full path
         bgaudio_files = [{'filename': os.path.basename(bgaudio_file)} for bgaudio_file in bgaudio_files]
@@ -280,7 +280,7 @@ def api_get_bgaudio():
     #print("API GET BGAUDIO", request.args.get('folder', default='bgaudio', type=str))
     try:
         folder_name = request.args.get('folder', default='bgaudio', type=str)
-        audio_files_path = os.path.join('media', folder_name, '*.mp3')
+        audio_files_path = os.path.join('static','media', folder_name, '*.mp3')
         audio_files = glob.glob(audio_files_path)
         #print("AUDIO FILES: ", audio_files)
 
