@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormControl, InputLabel, Typography, Select, MenuItem, Grid } from '@mui/material';
-import styles from './AudioSettingsForm.css';
 import useAudioFiles from '../../hooks/useAudioFiles';
 
 function AudioSettingsForm({ audiosettings, setAudioSettings }) {
@@ -18,16 +17,18 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
     
 
   return (
-    <div className={styles.AudioSettingsForm}>
-      <Typography variant="h5" className={styles.typographyHeader}>
-        Audio Settings
+    <div className="AudioSettingsForm">
+      <box className="typographyHeader">
+      <Typography variant="h5" className="typographyHeader">
+        Algemeen ontwerp
       </Typography>
+      </box>
       <Grid container spacing={2}>
         
         {/* Intro select */}
         <Grid item xs={12} md={4}>
           <FormControl fullWidth>
-            <InputLabel id="intro-label">Intro</InputLabel>
+            <InputLabel id="intro-label">Intro (start van je audiobestand)</InputLabel>
             <Select
               labelId="intro-label"
               value={audiosettings.intro}
@@ -43,7 +44,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
         {/* Outro select */}
         <Grid item xs={12} md={4}>
           <FormControl fullWidth>
-            <InputLabel id="outro-label">Outro</InputLabel>
+            <InputLabel id="outro-label">Outro (einde van je audiobestand)</InputLabel>
             <Select
               labelId="outro-label"
               value={audiosettings.outro}
@@ -59,7 +60,7 @@ function AudioSettingsForm({ audiosettings, setAudioSettings }) {
         {/* BGaudio select */}
         <Grid item xs={12} md={4}>
           <FormControl fullWidth>
-            <InputLabel id="bgaudio-label">Achtergrond audio</InputLabel>
+            <InputLabel id="bgaudio-label">Achtergrond (audio op de achtergrond)</InputLabel>
             <Select
               labelId="bgaudio-label"
               value={audiosettings.bgaudio}

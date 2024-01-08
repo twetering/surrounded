@@ -1,3 +1,7 @@
+import requests
+import json
+import os
+
 def update_voice_labels(voice_id, name, labels):
     url = f"https://api.elevenlabs.io/v1/voices/{voice_id}/edit"
 

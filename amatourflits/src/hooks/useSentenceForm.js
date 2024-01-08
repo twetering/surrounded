@@ -13,21 +13,24 @@ const useSentenceForm = (initialVoices) => {
 
     const addSentence = () => {
         const randomVoiceId = initialVoices.length > 0 ? initialVoices[Math.floor(Math.random() * initialVoices.length)].voice_id : '';
-        setSentences([...sentences, { text: '', voiceId: randomVoiceId }]);
+        setSentences(currentSentences => [...currentSentences, { text: '', voiceId: randomVoiceId }]);
     };
 
     const removeSentence = (index) => {
-        setSentences(sentences.filter((_, i) => i !== index));
+        setSentences(currentSentences => currentSentences.filter((_, i) => i !== index));
     };
 
     const updateSentence = (index, key, value) => {
-        const newSentences = [...sentences];
-        newSentences[index][key] = value;
-        setSentences(newSentences);
+        setSentences(currentSentences => {
+            const newSentences = [...currentSentences];
+            newSentences[index][key] = value;
+            return newSentences;
+        });
     };
 
     return {
         sentences,
+        setSentences,
         addSentence,
         removeSentence,
         updateSentence

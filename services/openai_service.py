@@ -3,13 +3,14 @@ import os
 import csv
 
 class OpenAIService:
+    
     def __init__(self):
         openai_api_key = os.getenv('OPENAI_API_KEY')
         self.client = OpenAI(api_key=openai_api_key)    
 
     def transcribe_audio(self, audio_path):
         audio_file= open(audio_path, "rb")
-        transcript = client.audio.translations.create(
+        transcript = self.client.audio.translations.create(
             model="whisper-1", 
             file=audio_file
         )
@@ -22,7 +23,14 @@ class OpenAIService:
         return self.client.beta.assistants.retrieve(assistant_id=assistant_id)
 
     def update_assistant(self, assistant_id, name, model, instructions, tools, file_ids):
-        return self.client.beta.assistants.update(assistant_id, name=name, model=model, instructions=instructions, tools=tools, file_ids=file_ids)
+        return self.client.beta.assistants.update(
+            assistant_id, 
+            name=name, 
+            model=model, 
+            instructions=instructions, 
+            tools=tools, 
+            file_ids=file_ids
+        )
 
     def delete_assistant(self, assistant_id):
         return self.client.beta.assistants.delete(assistant_id)
@@ -96,9 +104,9 @@ class OpenAIService:
         return answer
 
     # Assuming generate_audio is a method that needs to be refactored from app.py
-    def generate_audio(self, message, voice_id):
+    #def generate_audio(self, message, voice_id):
         # Add the logic for audio generation here
         # This might call ElevenLabsService or another service if needed
-        return audio_generated
+     #   return audio_generated
 
     
