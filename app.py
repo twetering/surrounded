@@ -277,12 +277,12 @@ def get_bgaudio():
 # Get all background audio files
 @app.route('/api/media')
 def api_get_bgaudio():
-    #print("API GET BGAUDIO", request.args.get('folder', default='bgaudio', type=str))
+    print("API GET BGAUDIO", request.args.get('folder', default='bgaudio', type=str))
     try:
         folder_name = request.args.get('folder', default='bgaudio', type=str)
         audio_files_path = os.path.join('static','media', folder_name, '*.mp3')
         audio_files = glob.glob(audio_files_path)
-        #print("AUDIO FILES: ", audio_files)
+        print("AUDIO FILES: ", audio_files)
 
         # Extract the filename from the full path
         audio_files = [{'filename': os.path.basename(file)} for file in audio_files]

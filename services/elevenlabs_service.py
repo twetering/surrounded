@@ -105,37 +105,37 @@ class ElevenLabsService:
         return speech_segment
 
     def add_background_to_segment(self, segment, bgvoice_filename):
-        bgvoice_path = os.path.join('media', bgvoice_filename)
+        bgvoice_path = os.path.join('static','media', bgvoice_filename)
         bg_segment = AudioSegment.from_file(bgvoice_path, format="mp3")
         bg_segment = bg_segment * (len(segment) // len(bg_segment) + 1)
         return segment.overlay(bg_segment[:len(segment)])
 
     def add_background_audio(self, audio, bgaudio):
-        bgaudio_path = os.path.join('media', bgaudio)
+        bgaudio_path = os.path.join('static','media', bgaudio)
         bg_segment = AudioSegment.from_file(bgaudio_path, format="mp3")
         bg_segment = bg_segment * (len(audio) // len(bg_segment) + 1)
         return audio.overlay(bg_segment[:len(audio)])
 
     def add_intro_audio(self, audio, intro):
-        intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
+        intro_audio = AudioSegment.from_file(os.path.join('static','media', intro), format="mp3")
         return intro_audio + audio
 
     def add_outro_audio(self, audio, outro):
-        outro_audio = AudioSegment.from_file(os.path.join('media', outro), format="mp3")
+        outro_audio = AudioSegment.from_file(os.path.join('static','media', outro), format="mp3")
         return audio + outro_audio
 
     def combine_audio_segments(self, segments):
         return sum(segments)
 
     def save_and_return_url(self, audio):
-        directory = os.path.join('media', 'output')
+        directory = os.path.join('static','media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
         combined_filename = os.path.join(directory, filename)
         audio.export(combined_filename, format='mp3')
-        return url_for('media', filename='output/' + filename, _external=True)
+        return url_for('static', filename='media/output/' + filename, _external=True)
 
     def generate_multiple_voices_bgvoice_backup(self, text_voice_bgvoice_pairs, intro, outro, bgaudio, settings):
         voices = self.list_voices()
@@ -146,7 +146,7 @@ class ElevenLabsService:
         audio_segments = []
         
         if intro:
-            intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
+            intro_audio = AudioSegment.from_file(os.path.join('static','media', intro), format="mp3")
         pair_counter = 0
         for pair in text_voice_bgvoice_pairs:
             text = pair['text']
@@ -162,7 +162,7 @@ class ElevenLabsService:
                 os.remove(speech_filename)
 
                 if bgvoice_filename:
-                    bgvoice_filename = os.path.join('media', bgvoice_filename)
+                    bgvoice_filename = os.path.join('static','media', bgvoice_filename)
                     bg_segment = AudioSegment.from_file(bgvoice_filename, format="mp3")
                     bg_segment = bg_segment * (len(speech_segment) // len(bg_segment) + 1)  # Herhaal het achtergrondgeluid
                     speech_segment = speech_segment.overlay(bg_segment[:len(speech_segment)])  # Overlay met spraak
