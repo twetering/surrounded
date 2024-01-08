@@ -7,7 +7,6 @@ import datetime
 import random
 from pydub import AudioSegment
 from elevenlabs import VoiceDesign, Gender, Age, Accent, play
-import io
 from flask import url_for
 
 
@@ -106,37 +105,37 @@ class ElevenLabsService:
         return speech_segment
 
     def add_background_to_segment(self, segment, bgvoice_filename):
-        bgvoice_path = os.path.join('static', 'audio', bgvoice_filename)
+        bgvoice_path = os.path.join('media', bgvoice_filename)
         bg_segment = AudioSegment.from_file(bgvoice_path, format="mp3")
         bg_segment = bg_segment * (len(segment) // len(bg_segment) + 1)
         return segment.overlay(bg_segment[:len(segment)])
 
     def add_background_audio(self, audio, bgaudio):
-        bgaudio_path = os.path.join('static', 'audio', bgaudio)
+        bgaudio_path = os.path.join('media', bgaudio)
         bg_segment = AudioSegment.from_file(bgaudio_path, format="mp3")
         bg_segment = bg_segment * (len(audio) // len(bg_segment) + 1)
         return audio.overlay(bg_segment[:len(audio)])
 
     def add_intro_audio(self, audio, intro):
-        intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+        intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
         return intro_audio + audio
 
     def add_outro_audio(self, audio, outro):
-        outro_audio = AudioSegment.from_file(os.path.join('static', 'audio', outro), format="mp3")
+        outro_audio = AudioSegment.from_file(os.path.join('media', outro), format="mp3")
         return audio + outro_audio
 
     def combine_audio_segments(self, segments):
         return sum(segments)
 
     def save_and_return_url(self, audio):
-        directory = os.path.join('static', 'audio')
+        directory = os.path.join('media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
         combined_filename = os.path.join(directory, filename)
         audio.export(combined_filename, format='mp3')
-        return url_for('static', filename='audio/' + filename, _external=True)
+        return url_for('media', filename='output/' + filename, _external=True)
 
     def generate_multiple_voices_bgvoice_backup(self, text_voice_bgvoice_pairs, intro, outro, bgaudio, settings):
         voices = self.list_voices()
@@ -147,7 +146,7 @@ class ElevenLabsService:
         audio_segments = []
         
         if intro:
-            intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+            intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
         pair_counter = 0
         for pair in text_voice_bgvoice_pairs:
             text = pair['text']
@@ -163,7 +162,7 @@ class ElevenLabsService:
                 os.remove(speech_filename)
 
                 if bgvoice_filename:
-                    bgvoice_filename = os.path.join('static', 'audio', bgvoice_filename)
+                    bgvoice_filename = os.path.join('media', bgvoice_filename)
                     bg_segment = AudioSegment.from_file(bgvoice_filename, format="mp3")
                     bg_segment = bg_segment * (len(speech_segment) // len(bg_segment) + 1)  # Herhaal het achtergrondgeluid
                     speech_segment = speech_segment.overlay(bg_segment[:len(speech_segment)])  # Overlay met spraak
@@ -188,24 +187,24 @@ class ElevenLabsService:
         combined_audio = sum(audio_segments)
         print(f"Combined audio length: {combined_audio.duration_seconds}")
         if bgaudio:
-            bgaudio = os.path.join('static', 'audio', bgaudio)
+            bgaudio = os.path.join('media', bgaudio)
             print(f"Processing Background audio: {bgaudio}")
             bg_segment = AudioSegment.from_file(bgaudio, format="mp3")
             bg_segment = bg_segment * (len(combined_audio) // len(bg_segment) + 1)  # Herhaal het achtergrondgeluid
             combined_audio = combined_audio.overlay(bg_segment[:len(combined_audio)])
 
         if intro:
-            intro_audio = AudioSegment.from_file(os.path.join('static', 'audio', intro), format="mp3")
+            intro_audio = AudioSegment.from_file(os.path.join('media', intro), format="mp3")
             print(f"Processing Intro audio: {intro}")
             combined_audio = intro_audio + combined_audio
 
         if outro:
-            outro_audio = AudioSegment.from_file(os.path.join('static', 'audio', outro), format="mp3")
+            outro_audio = AudioSegment.from_file(os.path.join('media', outro), format="mp3")
             print(f"Processing Outro audio: {outro}")
             combined_audio += outro_audio
 
         print(f"Combined audio length: {combined_audio.duration_seconds}")
-        directory = os.path.join('static', 'audio')
+        directory = os.path.join('media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -214,7 +213,7 @@ class ElevenLabsService:
         combined_filename = os.path.join(directory, filename)
         print(f"Full path audio filename: {combined_filename}")
         combined_audio.export(combined_filename, format='mp3')
-        audio_file_url = url_for('static', filename='audio/' + filename, _external=True)
+        audio_file_url = url_for('media', filename='output/' + filename, _external=True)
         return audio_file_url
 
 
@@ -251,7 +250,7 @@ class ElevenLabsService:
 
         combined_audio = sum(audio_segments)
 
-        directory = os.path.join('static', 'audio')
+        directory = os.path.join('media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -260,7 +259,7 @@ class ElevenLabsService:
         combined_audio.export(combined_filename, format='mp3')
 
         # Genereer de toegankelijke URL voor het audiobestand
-        audio_url = url_for('static', filename=f'audio/{filename}', _external=True)
+        audio_url = url_for('media', filename=f'output/{filename}', _external=True)
 
         return audio_url
 
@@ -316,7 +315,7 @@ class ElevenLabsService:
         if combined_audio.duration_seconds == 0:
             raise Exception("No audio segments were successfully processed")
 
-        directory = os.path.join('static', 'audio')
+        directory = os.path.join('media', 'output')
         if not os.path.exists(directory):
             os.makedirs(directory)
 
@@ -358,7 +357,7 @@ class ElevenLabsService:
                 continue
 
         # Load the background audio file
-        background_audio_file = os.path.join('static', 'audio', 'bgaudio', background_audio_file)
+        background_audio_file = os.path.join('media', 'bgaudio', background_audio_file)
         background_audio = AudioSegment.from_file(background_audio_file, format="mp3")
 
         # Use the background audio as the base
@@ -370,7 +369,7 @@ class ElevenLabsService:
             combined_audio = combined_audio.overlay(segment, position=start_time)
 
         # Save the combined audio to a .mp3 file
-        directory = os.path.join('static', 'audio')
+        directory = os.path.join('media', 'output')
         filename = f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}_combined.mp3"
         combined_filename = os.path.join(directory, filename)
         combined_audio.export(combined_filename, format='mp3')
